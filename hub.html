@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>BLUE HUB — Marketplace</title>
+<meta name="description" content="BLUE HUB — discover skills, find talent, connect with creators. A marketplace of services by independent creators." />
+<meta name="theme-color" content="#080808" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#080808;
+  --bg-2:#0E0E10;
+  --bg-char:#151515;
+  --surface:#131315;
+  --surface-2:#17171A;
+  --surface-3:#1C1C20;
+  --line:#242428;
+  --line-2:#303036;
+  --ivory:#F2EFE9;
+  --muted:#9C978E;
+  --muted-2:#6E6A63;
+  --red:#E12A22;
+  --red-soft:#FF5A4E;
+  --red-deep:#B01C16;
+  --ok:#3FB27F;
+  --warn:#E0A232;
+  --err:#FF5B52;
+  --r:8px;
+  --r-lg:12px;
+  --r-xl:16px;
+  --shadow:0 1px 0 rgba(255,255,255,.03), 0 18px 44px -30px rgba(0,0,0,.95);
+  --max:1180px;
+  --ease:cubic-bezier(.22,.68,.18,1);
+  --font-display:'Sora','Helvetica Neue',Arial,sans-serif;
+  --font-body:'Inter','Helvetica Neue',Arial,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Menlo,monospace;
+  --nav-h:66px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ivory);
+  font-family:var(--font-body);font-size:16px;line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+h1,h2,h3,h4,p,figure{margin:0}
+ul,ol{margin:0;padding:0;list-style:none}
+:focus-visible{outline:2px solid var(--red-soft);outline-offset:2px;border-radius:4px}
+::selection{background:var(--red);color:#fff}
+[hidden]{display:none !important}
+.wrap{width:100%;max-width:var(--max);margin:0 auto;padding:0 clamp(18px,4vw,34px)}
+.mono{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:0;z-index:70;background:rgba(10,10,11,.92);border-bottom:1px solid var(--line);backdrop-filter:blur(14px) saturate(130%);-webkit-backdrop-filter:blur(14px) saturate(130%)}
+.nav__inner{max-width:var(--max);margin:0 auto;padding:0 clamp(16px,3vw,32px);height:var(--nav-h);display:flex;align-items:center;gap:clamp(10px,2vw,26px)}
+.logo{display:inline-flex;align-items:center;gap:10px;flex:none}
+.logo__mark{width:30px;height:30px;border-radius:7px;background:var(--red);color:#fff;display:grid;place-items:center;font:700 15px/1 var(--font-display);letter-spacing:-.02em}
+.logo__txt{font:600 13.5px/1 var(--font-display);letter-spacing:.09em;display:inline-flex;align-items:baseline;gap:5px}
+.logo__txt em{font-style:normal;color:var(--muted-2);letter-spacing:.05em;font-size:11px}
+.nav__links{display:flex;align-items:center;gap:clamp(9px,1.5vw,20px);margin-left:auto}
+.nav__links a{position:relative;font-size:13.5px;font-weight:500;color:var(--muted);padding:6px 2px;transition:color .16s var(--ease);white-space:nowrap}
+.nav__links a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--red);transition:right .22s var(--ease)}
+.nav__links a:hover,.nav__links a.is-active{color:var(--ivory)}
+.nav__links a:hover::after,.nav__links a.is-active::after{right:0}
+.nav__back{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:8px 14px;transition:color .16s,border-color .16s,background .16s;white-space:nowrap}
+.nav__back:hover{color:var(--ivory);border-color:var(--red);background:var(--surface-2)}
+.nav__back svg{width:14px;height:14px}
+.uchip{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line-2);border-radius:999px;padding:5px 12px 5px 5px;background:var(--surface)}
+.uchip__av{width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font:600 11px/1 var(--font-display);overflow:hidden;flex:none}
+.uchip__av img{width:100%;height:100%;object-fit:cover}
+.uchip__name{font-size:12.5px;font-weight:600;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.uchip button.signout{font-size:12px;color:var(--muted);padding-left:8px;border-left:1px solid var(--line-2)}
+.uchip button.signout:hover{color:var(--red-soft)}
+.menu-btn{display:none;width:40px;height:40px;border:1px solid var(--line-2);border-radius:8px;place-items:center}
+.menu-btn span{display:block;width:16px;height:1.5px;background:var(--ivory);margin:3px 0}
+
+/* ---------- buttons ---------- */
+.btn{--btn-bg:var(--red);--btn-fg:#fff;--btn-bd:var(--red);display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:12px 19px;background:var(--btn-bg);color:var(--btn-fg);border:1px solid var(--btn-bd);border-radius:var(--r);font-size:13.5px;font-weight:600;line-height:1;transition:background .16s var(--ease),border-color .16s var(--ease),color .16s var(--ease),transform .16s var(--ease);white-space:nowrap}
+.btn svg{width:15px;height:15px;flex:none}
+.btn:hover{--btn-bg:var(--red-deep);--btn-bd:var(--red-deep)}
+.btn:active{transform:translateY(1px)}
+.btn--ghost{--btn-bg:transparent;--btn-fg:var(--ivory);--btn-bd:var(--line-2)}
+.btn--ghost:hover{--btn-bg:var(--surface-2);--btn-bd:var(--red);--btn-fg:var(--red-soft)}
+.btn--quiet{--btn-bg:transparent;--btn-fg:var(--muted);--btn-bd:transparent;padding:9px 11px}
+.btn--quiet:hover{--btn-fg:var(--ivory);--btn-bg:var(--surface-2)}
+.btn--sm{padding:9px 13px;font-size:12.5px}
+.btn--danger{--btn-bg:transparent;--btn-fg:var(--red-soft);--btn-bd:rgba(225,42,34,.4)}
+.btn--danger:hover{--btn-bg:rgba(225,42,34,.12);--btn-bd:var(--red)}
+.btn[disabled]{opacity:.55;pointer-events:none}
+.spin{width:13px;height:13px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---------- hero ---------- */
+.hub-hero{padding:clamp(34px,6vw,64px) 0 clamp(20px,3vw,30px);border-bottom:1px solid var(--line);background:radial-gradient(900px 320px at 12% -30%,rgba(225,42,34,.16),transparent 70%)}
+.hub-hero__eyebrow{display:inline-flex;align-items:center;gap:9px;margin-bottom:16px}
+.hub-hero__dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 0 4px rgba(225,42,34,.15)}
+.hub-hero h1{font:700 clamp(30px,5vw,48px)/1.02 var(--font-display);letter-spacing:-.02em}
+.hub-hero h1 span{color:var(--red)}
+.hub-hero p{margin-top:12px;color:var(--muted);max-width:56ch;font-size:clamp(14px,1.5vw,16px)}
+.hub-hero__stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.stat{display:inline-flex;align-items:baseline;gap:8px;border:1px solid var(--line);border-radius:999px;padding:7px 14px;background:var(--surface);font-size:12.5px;color:var(--muted)}
+.stat b{font:600 14px/1 var(--font-display);color:var(--ivory)}
+
+/* ---------- filters ---------- */
+.filters{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,.9fr) minmax(0,.7fr) minmax(0,.8fr);gap:10px;margin-top:24px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+.input,.select,.textarea{width:100%;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r);padding:11px 13px;font-size:14px;transition:border-color .16s,background .16s}
+.input:hover,.select:hover,.textarea:hover{border-color:#3a3a42}
+.input:focus,.select:focus,.textarea:focus{outline:none;border-color:var(--red);background:var(--surface-2)}
+.textarea{resize:vertical;min-height:120px;line-height:1.6}
+.select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:34px}
+.filters__row2{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:16px 0 4px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line-2);border-radius:999px;padding:7px 14px;font-size:12.5px;color:var(--muted);white-space:nowrap;transition:color .16s,border-color .16s,background .16s}
+.chip:hover{color:var(--ivory);border-color:#3a3a42}
+.chip.is-on{background:rgba(225,42,34,.14);border-color:rgba(225,42,34,.5);color:#fff}
+
+/* ---------- results ---------- */
+.results{padding:26px 0 70px}
+.results__bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.results__count{font-size:13px;color:var(--muted)}
+.results__count b{color:var(--ivory)}
+.results__tools{display:flex;gap:8px;align-items:center}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;transition:border-color .18s var(--ease),transform .18s var(--ease),box-shadow .18s var(--ease)}
+.card:hover{border-color:rgba(225,42,34,.45);transform:translateY(-2px);box-shadow:var(--shadow)}
+.card__media{position:relative;height:168px;background:var(--bg-2);border-bottom:1px solid var(--line);overflow:hidden}
+.card__media img{width:100%;height:100%;object-fit:cover;display:block}
+.card__media--empty{display:grid;place-items:center;background:linear-gradient(140deg,#131315,#0c0c0d)}
+.card__media--empty span{font:700 26px/1 var(--font-display);letter-spacing:.14em;color:#2a2a2e}
+.card__body{padding:16px 16px 14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card__top{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tag{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line-2);border-radius:999px;padding:4px 9px;color:var(--muted)}
+.tag--cat{border-color:rgba(225,42,34,.4);color:var(--red-soft);background:rgba(225,42,34,.08)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:500;padding:3px 9px;border-radius:999px;border:1px solid var(--line-2);color:var(--muted)}
+.badge i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge--ok{color:var(--ok);border-color:rgba(63,178,127,.35);background:rgba(63,178,127,.08)}
+.badge--warn{color:var(--warn);border-color:rgba(224,162,50,.35);background:rgba(224,162,50,.08)}
+.badge--off{color:var(--muted-2);border-color:var(--line)}
+.card__title{font:600 16px/1.35 var(--font-display);letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card__desc{font-size:13px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.card__skills{display:flex;flex-wrap:wrap;gap:6px}
+.skill{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:2px 7px;background:var(--bg-2)}
+.card__foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:4px;padding-top:12px;border-top:1px solid var(--line)}
+.price{font:600 15px/1 var(--font-display)}
+.price small{font:400 11px/1 var(--font-body);color:var(--muted-2);display:block;margin-top:4px;letter-spacing:.02em}
+.seller{display:flex;align-items:center;gap:8px;min-width:0}
+.seller__av{width:22px;height:22px;border-radius:50%;background:var(--surface-3);color:var(--ivory);display:grid;place-items:center;font:600 10px/1 var(--font-display);overflow:hidden;flex:none}
+.seller__av img{width:100%;height:100%;object-fit:cover}
+.seller__name{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card__actions{display:flex;gap:8px;margin-top:2px}
+.card__actions .btn{flex:1}
+
+/* skeletons */
+.sk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+.sk__m{height:168px;background:linear-gradient(90deg,#141416,#1b1b1f,#141416);background-size:200% 100%;animation:sh 1.3s infinite}
+.sk__b{padding:16px;display:flex;flex-direction:column;gap:10px}
+.sk__l{height:12px;border-radius:4px;background:linear-gradient(90deg,#141416,#1b1b1f,#141416);background-size:200% 100%;animation:sh 1.3s infinite}
+@keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* states */
+.state{border:1px dashed var(--line-2);border-radius:var(--r-lg);padding:clamp(28px,5vw,48px);text-align:center;background:var(--surface)}
+.state h3{font:600 18px/1.3 var(--font-display);margin-bottom:8px}
+.state p{color:var(--muted);font-size:14px;max-width:48ch;margin:0 auto 18px}
+.state--err{border-color:rgba(225,42,34,.4);background:rgba(225,42,34,.06)}
+
+/* ---------- panels / forms ---------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:clamp(18px,3vw,28px)}
+.panel + .panel{margin-top:16px}
+.panel__head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.panel__head h2{font:600 19px/1.25 var(--font-display);letter-spacing:-.01em}
+.panel__head p{color:var(--muted);font-size:13px;margin-top:4px}
+.form{display:grid;gap:16px}
+.form__row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.err{color:var(--red-soft);font-size:12px;margin-top:4px;min-height:0}
+.err:empty{display:none}
+.hint{color:var(--muted-2);font-size:11.5px;margin-top:5px}
+.status{margin-top:14px;font-size:13px;border-radius:var(--r);padding:11px 13px;border:1px solid transparent}
+.status:empty{display:none}
+.status--ok{border-color:rgba(63,178,127,.35);background:rgba(63,178,127,.08);color:#8be0b4}
+.status--bad{border-color:rgba(225,42,34,.4);background:rgba(225,42,34,.08);color:var(--red-soft)}
+.progress{height:4px;border-radius:999px;background:var(--surface-3);overflow:hidden;margin-top:8px}
+.progress i{display:block;height:100%;width:35%;background:var(--red);animation:ind 1.1s infinite var(--ease)}
+@keyframes ind{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
+.imgdrop{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.imgdrop__prev{width:96px;height:72px;border-radius:8px;border:1px solid var(--line-2);background:var(--bg-2);display:grid;place-items:center;color:var(--muted-2);font-size:11px;overflow:hidden;flex:none}
+.imgdrop__prev img{width:100%;height:100%;object-fit:cover}
+
+/* ---------- auth gate ---------- */
+.gate{max-width:520px;margin:clamp(24px,6vw,60px) auto;text-align:center}
+.gate__ico{width:52px;height:52px;border-radius:14px;background:rgba(225,42,34,.12);border:1px solid rgba(225,42,34,.35);display:grid;place-items:center;margin:0 auto 16px;color:var(--red-soft)}
+.gate h2{font:600 22px/1.2 var(--font-display);margin-bottom:8px}
+.gate p{color:var(--muted);font-size:14px;margin-bottom:20px}
+
+/* ---------- dashboard ---------- */
+.dash{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;padding:26px 0 70px}
+.dash__side{position:sticky;top:calc(var(--nav-h) + 16px);align-self:start;display:flex;flex-direction:column;gap:4px;border:1px solid var(--line);border-radius:var(--r-lg);padding:10px;background:var(--surface)}
+.dash__side a,.dash__side button{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:7px;font-size:13.5px;color:var(--muted);text-align:left;transition:background .15s,color .15s}
+.dash__side a:hover,.dash__side button:hover{background:var(--surface-2);color:var(--ivory)}
+.dash__side a.is-on{background:rgba(225,42,34,.12);color:#fff}
+.dash__side svg{width:15px;height:15px;flex:none;opacity:.8}
+.dash__stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:18px}
+.kpi{border:1px solid var(--line);border-radius:var(--r);padding:13px 15px;background:var(--surface)}
+.kpi b{display:block;font:600 22px/1.1 var(--font-display)}
+.kpi span{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
+.mylist{display:flex;flex-direction:column;gap:10px}
+.myrow{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:var(--r);padding:12px;background:var(--surface)}
+.myrow__thumb{width:64px;height:48px;border-radius:6px;background:var(--bg-2);border:1px solid var(--line);overflow:hidden;flex:none;display:grid;place-items:center;color:#2a2a2e;font:700 12px/1 var(--font-display)}
+.myrow__thumb img{width:100%;height:100%;object-fit:cover}
+.myrow__main{min-width:0;flex:1}
+.myrow__t{font:600 14px/1.3 var(--font-display);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.myrow__m{font-size:12px;color:var(--muted);margin-top:3px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.myrow__acts{display:flex;gap:6px;flex:none}
+
+/* ---------- seller profile ---------- */
+.seller-head{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:26px 0 18px}
+.seller-head__av{width:64px;height:64px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font:700 20px/1 var(--font-display);overflow:hidden;flex:none}
+.seller-head__av img{width:100%;height:100%;object-fit:cover}
+.seller-head h1{font:600 22px/1.2 var(--font-display)}
+.seller-head p{color:var(--muted);font-size:13.5px}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:rgba(4,4,5,.72);backdrop-filter:blur(6px)}
+.modal__card{width:100%;max-width:420px;background:var(--surface);border:1px solid var(--line-2);border-radius:var(--r-lg);padding:22px;box-shadow:0 40px 90px -40px #000;animation:pop .18s var(--ease)}
+@keyframes pop{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+.modal__card h3{font:600 17px/1.3 var(--font-display);margin-bottom:4px}
+.modal__sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.modal__val{display:flex;align-items:center;gap:8px;background:var(--bg-2);border:1px solid var(--line-2);border-radius:var(--r);padding:11px 13px;font-size:13.5px;word-break:break-all;margin-bottom:16px}
+.modal__acts{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+
+/* ---------- toast ---------- */
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);z-index:200;background:var(--surface-2);border:1px solid var(--line-2);border-radius:999px;padding:11px 20px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.is-on{opacity:1;transform:translate(-50%,0)}
+.toast--ok{border-color:rgba(63,178,127,.45)}
+.toast--bad{border-color:rgba(225,42,34,.5)}
+
+/* ---------- footer ---------- */
+.foot{border-top:1px solid var(--line);padding:26px 0;color:var(--muted-2);font-size:12.5px}
+.foot__in{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.foot a{color:var(--muted)}
+.foot a:hover{color:var(--red-soft)}
+
+/* ---------- responsive ---------- */
+@media (max-width:980px){
+  .nav__links{display:none}
+  .menu-btn{display:grid}
+  .nav__inner{gap:10px}
+  .filters{grid-template-columns:1fr 1fr}
+  .filters__row2{grid-template-columns:1fr 1fr}
+  .dash{grid-template-columns:1fr}
+  .dash__side{position:static;flex-direction:row;overflow-x:auto}
+  .nav__back span{display:none}
+}
+@media (max-width:560px){
+  .uchip{padding:4px;gap:6px}
+  .uchip__name{display:none}
+  .uchip button.signout{white-space:nowrap;padding:4px 8px}
+  .logo__txt em{display:none}
+}
+@media (max-width:640px){
+  .grid{grid-template-columns:1fr}
+  .form__row{grid-template-columns:1fr}
+  .filters,.filters__row2{grid-template-columns:1fr}
+  .myrow{flex-wrap:wrap}
+  .myrow__acts{width:100%;justify-content:flex-end}
+  .hub-hero__stats{gap:8px}
+  .uchip__name{max-width:74px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+.mobile-menu{border-top:1px solid var(--line);background:var(--bg-2);padding:12px clamp(16px,4vw,24px) 18px;display:grid;gap:2px}
+.mobile-menu a,.mobile-menu button{display:block;padding:11px 4px;font-size:15px;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04);text-align:left}
+.mobile-menu a.is-on{color:var(--ivory)}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav__inner">
+    <a href="hub.html#/" class="logo" aria-label="BLUE HUB home">
+      <span class="logo__mark">B</span>
+      <span class="logo__txt">BLUE<em>HUB</em></span>
+    </a>
+
+    <nav class="nav__links" aria-label="BLUE HUB">
+      <a href="hub.html#/" data-route="/">Explore</a>
+      <a href="hub.html#/categories" data-route="/categories">Categories</a>
+      <a href="hub.html#/post" data-route="/post">Post a Service</a>
+      <a href="hub.html#/dashboard" data-route="/dashboard">My Dashboard</a>
+      <a href="index.html#/profile" id="navProfile">My Profile</a>
+    </nav>
+
+    <div id="chipSlot"></div>
+
+    <a class="nav__back" href="index.html" aria-label="Back to portfolio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+      <span>Portfolio</span>
+    </a>
+
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <a href="hub.html#/" data-route="/">Explore</a>
+    <a href="hub.html#/categories" data-route="/categories">Categories</a>
+    <a href="hub.html#/post" data-route="/post">Post a Service</a>
+    <a href="hub.html#/dashboard" data-route="/dashboard">My Dashboard</a>
+    <a href="index.html#/profile">My Profile</a>
+    <a href="index.html">Back to Portfolio</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= EXPLORE ================= -->
+  <section id="viewExplore">
+    <div class="hub-hero">
+      <div class="wrap">
+        <span class="hub-hero__eyebrow mono"><i class="hub-hero__dot"></i>BLUE HUB · Marketplace</span>
+        <h1>Discover skills. Find talent.<br /><span>Connect with creators.</span></h1>
+        <p>A marketplace of services from real creators on BLUE HUB — websites, design, editing, bots and more. Browse freely, then reach out directly.</p>
+        <div class="hub-hero__stats">
+          <span class="stat"><b id="statTotal">—</b> services listed</span>
+          <span class="stat"><b id="statSellers">—</b> creators</span>
+          <span class="stat"><b>0%</b> commission</span>
+        </div>
+
+        <div class="filters">
+          <div class="field">
+            <label for="q">Search</label>
+            <input class="input" id="q" type="search" placeholder="Search a service, skill or creator…" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="category">Category</label>
+            <select class="select" id="category"><option value="">All categories</option></select>
+          </div>
+          <div class="field">
+            <label for="currency">Currency</label>
+            <select class="select" id="currency">
+              <option value="">Any</option>
+              <option value="INR">INR ₹</option>
+              <option value="USD">USD $</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="sort">Sort by</label>
+            <select class="select" id="sort">
+              <option value="newest">Newest first</option>
+              <option value="price-asc">Lowest price</option>
+              <option value="price-desc">Highest price</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filters__row2">
+          <div class="field">
+            <label for="minPrice">Min price</label>
+            <input class="input" id="minPrice" type="number" min="0" step="1" placeholder="0" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label for="maxPrice">Max price</label>
+            <input class="input" id="maxPrice" type="number" min="0" step="1" placeholder="Any" inputmode="numeric" />
+          </div>
+          <div class="field">
+            <label for="availability">Availability</label>
+            <select class="select" id="availability">
+              <option value="">Any</option>
+              <option value="available">Available now</option>
+              <option value="limited">Limited slots</option>
+            </select>
+          </div>
+          <div class="field" style="justify-content:flex-end">
+            <label aria-hidden="true">&nbsp;</label>
+            <button class="btn btn--ghost btn--block" type="button" id="resetFilters">Reset filters</button>
+          </div>
+        </div>
+
+        <div class="chips" id="chips" aria-label="Quick categories"></div>
+      </div>
+    </div>
+
+    <div class="wrap results">
+      <div class="results__bar">
+        <p class="results__count" id="resultCount">Loading services…</p>
+        <div class="results__tools">
+          <a class="btn btn--sm btn--ghost" href="hub.html#/post" id="postBtnTop">Post a Service</a>
+        </div>
+      </div>
+
+      <div class="grid" id="grid" aria-live="polite"></div>
+      <div style="text-align:center;margin-top:26px">
+        <button class="btn btn--ghost" id="loadMore" type="button" hidden>Load more</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CATEGORIES ================= -->
+  <section id="viewCategories" hidden>
+    <div class="wrap" style="padding:clamp(28px,5vw,54px) 0 70px">
+      <span class="mono">Browse by category</span>
+      <h1 style="font:700 clamp(26px,4vw,38px)/1.1 var(--font-display);letter-spacing:-.02em;margin:10px 0 8px">Categories</h1>
+      <p style="color:var(--muted);max-width:56ch;margin-bottom:26px">Every listing on BLUE HUB is filed under one category. Pick one to jump straight into the explore view with that filter applied.</p>
+      <div class="grid" id="catGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= POST / EDIT ================= -->
+  <section id="viewPost" hidden>
+    <div class="wrap" style="padding:clamp(26px,5vw,48px) 0 70px;max-width:820px">
+      <a href="hub.html#/dashboard" class="mono" style="color:var(--muted);display:inline-flex;gap:6px;align-items:center;margin-bottom:14px">← My Dashboard</a>
+      <div id="postHead">
+        <span class="mono">New listing</span>
+        <h1 style="font:700 clamp(24px,4vw,34px)/1.1 var(--font-display);letter-spacing:-.02em;margin:8px 0 6px">Post a Service</h1>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:22px">Describe what you do, set a starting price, and choose how clients should reach you. Your listing goes live immediately.</p>
+      </div>
+
+      <div id="postGate" class="gate" hidden>
+        <div class="gate__ico">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        </div>
+        <h2>Sign in to publish a service</h2>
+        <p>BLUE HUB uses the same account as the portfolio — no separate sign-up.</p>
+        <a class="btn" id="gateSignIn" href="index.html#/login">Sign in</a>
+      </div>
+
+      <form class="panel form" id="serviceForm" novalidate hidden>
+        <div class="form__row">
+          <div class="field">
+            <label for="fTitle">Service title</label>
+            <input class="input" id="fTitle" maxlength="90" placeholder="e.g. Landing page in 3 days" autocomplete="off" />
+            <p class="err" id="eTitle"></p>
+          </div>
+          <div class="field">
+            <label for="fCategory">Category</label>
+            <select class="select" id="fCategory"></select>
+            <p class="err" id="eCategory"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="fDesc">Description</label>
+          <textarea class="textarea" id="fDesc" maxlength="3000" placeholder="What is included, how long it takes, what you need from the client…"></textarea>
+          <p class="hint"><span id="descCount">0</span> / 3000 characters (minimum 30)</p>
+          <p class="err" id="eDesc"></p>
+        </div>
+
+        <div class="field">
+          <label for="fSkills">Skills / technologies</label>
+          <input class="input" id="fSkills" maxlength="240" placeholder="React, Tailwind, Figma (comma separated, max 8)" autocomplete="off" />
+          <p class="err" id="eSkills"></p>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="fPrice">Starting price</label>
+            <input class="input" id="fPrice" type="number" min="0" step="1" inputmode="decimal" placeholder="e.g. 4999" />
+            <p class="err" id="ePrice"></p>
+          </div>
+          <div class="field">
+            <label for="fCurrency">Currency</label>
+            <select class="select" id="fCurrency">
+              <option value="INR">INR — ₹ Indian rupee</option>
+              <option value="USD">USD — $ US dollar</option>
+            </select>
+            <p class="err" id="eCurrency"></p>
+          </div>
+        </div>
+
+        <div class="form__row">
+          <div class="field">
+            <label for="fAvailability">Availability</label>
+            <select class="select" id="fAvailability">
+              <option value="available">Available now</option>
+              <option value="limited">Limited slots</option>
+              <option value="unavailable">Not taking work</option>
+            </select>
+            <p class="err" id="eAvailability"></p>
+          </div>
+          <div class="field">
+            <label for="fContactMethod">Contact method</label>
+            <select class="select" id="fContactMethod">
+              <option value="discord">Discord</option>
+              <option value="email">Email (public)</option>
+              <option value="portfolio">Portfolio URL</option>
+              <option value="website">Website URL</option>
+              <option value="other">Other link</option>
+            </select>
+            <p class="err" id="eContactMethod"></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="fContactValue" id="contactLabel">Discord username</label>
+          <input class="input" id="fContactValue" maxlength="300" placeholder="yourname" autocomplete="off" />
+          <p class="hint">This is shown publicly on your listing. Your account email is never displayed automatically.</p>
+          <p class="err" id="eContactValue"></p>
+        </div>
+
+        <div class="field">
+          <label for="fImage">Service image (optional)</label>
+          <div class="imgdrop">
+            <div class="imgdrop__prev" id="imgPrev">No image</div>
+            <div style="flex:1;min-width:200px">
+              <input class="input" id="fImage" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+              <p class="hint">PNG, JPG, WebP or GIF · max 3 MB · shown at the top of your card.</p>
+              <div class="progress" id="imgProg" hidden><i></i></div>
+              <button type="button" class="btn btn--quiet btn--sm" id="imgClear" hidden>Remove image</button>
+            </div>
+          </div>
+          <p class="err" id="eImage"></p>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="btn" type="submit" id="submitBtn">Publish service</button>
+          <button class="btn btn--ghost" type="button" id="cancelEdit" hidden>Cancel edit</button>
+          <span class="hint" id="formHint" style="margin:0">You can edit or remove this any time from your dashboard.</span>
+        </div>
+        <p class="status" id="formStatus"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="viewDashboard" hidden>
+    <div class="wrap dash">
+      <aside class="dash__side">
+        <a href="hub.html#/dashboard" class="is-on">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+          Overview
+        </a>
+        <a href="hub.html#/post" id="dashNew">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 5v14M5 12h14"/></svg>
+          Create listing
+        </a>
+        <a href="hub.html#/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+          Explore BLUE HUB
+        </a>
+        <a href="index.html#/profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+          Portfolio profile
+        </a>
+      </aside>
+
+      <div>
+        <div id="dashGate" class="gate" hidden>
+          <div class="gate__ico">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          </div>
+          <h2>Sign in to open your dashboard</h2>
+          <p>Manage your listings with the same account you use on the portfolio.</p>
+          <a class="btn" id="dashSignIn" href="index.html#/login">Sign in</a>
+        </div>
+
+        <div id="dashBody" hidden>
+          <div class="panel__head" style="margin-bottom:14px">
+            <div>
+              <h2>My Dashboard</h2>
+              <p id="dashWho">—</p>
+            </div>
+            <a class="btn btn--sm" href="hub.html#/post">+ New listing</a>
+          </div>
+
+          <div class="dash__stats">
+            <div class="kpi"><b id="kTotal">0</b><span>Total listings</span></div>
+            <div class="kpi"><b id="kLive">0</b><span>Published</span></div>
+            <div class="kpi"><b id="kOff">0</b><span>Unavailable</span></div>
+            <div class="kpi"><b id="kViews">—</b><span>Views</span></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel__head">
+              <div>
+                <h2>My listings</h2>
+                <p>Only you can edit or delete these.</p>
+              </div>
+            </div>
+            <div id="myList" class="mylist"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SELLER ================= -->
+  <section id="viewSeller" hidden>
+    <div class="wrap" style="padding-bottom:70px">
+      <div class="seller-head" id="sellerHead"></div>
+      <div class="grid" id="sellerGrid"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <span>BLUE HUB — part of <a href="index.html">HARSHIT·DEV</a></span>
+    <span><a href="index.html">← Back to portfolio</a></span>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ==========================================================
+     1. CONFIG — same project as index.html
+     ========================================================== */
+  const SUPABASE_URL = 'https://hwtrznxestpamoexkhwh.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_7kV3G-rkWCVgS51dAVQj_g_xrVIAMWR';
+  const SESSION_KEY = 'sb-hwtrznxestpamoexkhwh-auth-token';
+
+  /* Expandable category system: add a string here and it appears
+     everywhere (form, filters, category page). The database stores
+     the label as text, so no migration is needed to add more. */
+  const CATEGORIES = [
+    'Website Development',
+    'Graphic Design',
+    'Thumbnail Design',
+    'Video Editing',
+    'Discord Server Setup',
+    'Bot Development',
+    'Minecraft Services',
+    'Content Writing',
+    'UI/UX Design',
+    'Social Media Management',
+    'Other Services'
+  ];
+
+  const PAGE_SIZE = 9;
+  const MAX_IMAGE = 3 * 1024 * 1024;
+  const IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
+
+  const $ = function (s, r) { return (r || document).querySelector(s); };
+  const $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  /* Same storage strategy as index.html, so the sign-in session is shared
+     between the portfolio and BLUE HUB on the same origin. */
+  let remember = true;
+  try { remember = sessionStorage.getItem('hp.remember') !== '0'; } catch (e) { remember = true; }
+
+  const sessionStore = {
+    getItem: function (k) {
+      try { const v = localStorage.getItem(k); if (v !== null) return v; } catch (e) {}
+      try { return sessionStorage.getItem(k); } catch (e) { return null; }
+    },
+    setItem: function (k, v) {
+      try {
+        if (remember) { localStorage.setItem(k, v); sessionStorage.removeItem(k); }
+        else { sessionStorage.setItem(k, v); localStorage.removeItem(k); }
+      } catch (e) {}
+    },
+    removeItem: function (k) {
+      try { localStorage.removeItem(k); } catch (e) {}
+      try { sessionStorage.removeItem(k); } catch (e) {}
+    }
+  };
+
+  let sb = null;
+  try {
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: {
+          storage: sessionStore,
+          storageKey: SESSION_KEY,
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          flowType: 'implicit'
+        }
+      });
+    }
+  } catch (e) { sb = null; }
+
+  const OFFLINE = 'Could not reach the marketplace service. Check your connection and try again.';
+
+  /* ==========================================================
+     2. STATE + small helpers
+     ========================================================== */
+  const state = {
+    user: null,
+    profile: null,
+    q: '',
+    category: '',
+    currency: '',
+    availability: '',
+    min: null,
+    max: null,
+    sort: 'newest',
+    offset: 0,
+    count: 0,
+    items: [],
+    loading: false,
+    editing: null,
+    imageUrl: null,
+    sellers: {}
+  };
+
+  function el(tag, props, kids) {
+    const node = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (k) {
+        const v = props[k];
+        if (v === null || v === undefined) return;
+        if (k === 'class') node.className = v;
+        else if (k === 'text') node.textContent = v;
+        else if (k === 'on') Object.keys(v).forEach(function (ev) { node.addEventListener(ev, v[ev]); });
+        else node.setAttribute(k, v);
+      });
+    }
+    (kids || []).forEach(function (kid) { if (kid) node.appendChild(kid); });
+    return node;
+  }
+
+  function toast(msg, kind) {
+    const t = $('#toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.className = 'toast is-on' + (kind ? ' toast--' + kind : '');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.className = 'toast'; }, 3600);
+  }
+
+  function money(value, currency) {
+    const n = Number(value) || 0;
+    const cur = currency === 'USD' ? 'USD' : 'INR';
+    try {
+      return new Intl.NumberFormat(cur === 'INR' ? 'en-IN' : 'en-US', {
+        style: 'currency', currency: cur,
+        maximumFractionDigits: n % 1 ? 2 : 0, minimumFractionDigits: 0
+      }).format(n);
+    } catch (e) {
+      return (cur === 'INR' ? '\u20B9' : '$') + n;
+    }
+  }
+
+  function shortDate(iso) {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+  }
+
+  function initials(name) {
+    const s = String(name || 'BLUE HUB').replace(/[^A-Za-z0-9 ]/g, ' ').trim();
+    const parts = s.split(/\s+/).filter(Boolean);
+    if (!parts.length) return 'B';
+    return (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase();
+  }
+
+  function safeUrl(raw) {
+    const s = String(raw || '').trim();
+    if (!s) return null;
+    try {
+      const u = new URL(s);
+      if (u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+    } catch (e) {}
+    return null;
+  }
+
+  function availabilityMeta(a) {
+    if (a === 'limited') return { cls: 'badge--warn', label: 'Limited slots' };
+    if (a === 'unavailable') return { cls: 'badge--off', label: 'Not taking work' };
+    return { cls: 'badge--ok', label: 'Available now' };
+  }
+
+  /* ==========================================================
+     3. AUTH — read the shared session, no second login system
+     ========================================================== */
+  async function loadSession() {
+    if (!sb) return null;
+    try {
+      const res = await sb.auth.getSession();
+      const session = res && res.data ? res.data.session : null;
+      state.user = session ? session.user : null;
+    } catch (e) { state.user = null; }
+
+    state.profile = null;
+    if (state.user) {
+      try {
+        const p = await sb.from('profiles').select('username,full_name,avatar_url').eq('id', state.user.id).maybeSingle();
+        if (p && p.data) state.profile = p.data;
+      } catch (e) {}
+    }
+    paintChip();
+    return state.user;
+  }
+
+  function displayName() {
+    if (state.profile && state.profile.full_name) return state.profile.full_name;
+    if (state.profile && state.profile.username) return state.profile.username;
+    if (state.user) return String(state.user.email || 'You').split('@')[0];
+    return 'You';
+  }
+
+  function paintChip() {
+    const slot = $('#chipSlot');
+    if (!slot) return;
+    slot.textContent = '';
+    if (!state.user) {
+      slot.appendChild(el('a', { class: 'btn btn--sm btn--ghost', href: 'index.html#/login', text: 'Sign in' }));
+      return;
+    }
+    const av = el('span', { class: 'uchip__av' });
+    if (state.profile && state.profile.avatar_url && safeUrl(state.profile.avatar_url)) {
+      av.appendChild(el('img', { src: safeUrl(state.profile.avatar_url), alt: '' }));
+    } else {
+      av.textContent = initials(displayName());
+    }
+    const chip = el('div', { class: 'uchip' }, [
+      av,
+      el('span', { class: 'uchip__name', text: displayName() }),
+      el('button', { class: 'signout', type: 'button', text: 'Sign out', on: { click: signOut } })
+    ]);
+    slot.appendChild(chip);
+  }
+
+  async function signOut() {
+    try { if (sb) await sb.auth.signOut(); } catch (e) {}
+    state.user = null;
+    state.profile = null;
+    paintChip();
+    toast('Signed out.', 'ok');
+    render();
+  }
+
+  function requireAuth(target) {
+    try { sessionStorage.setItem('hub.return', target); } catch (e) {}
+    location.href = 'index.html#/login';
+  }
+
+  /* ==========================================================
+     4. ROUTER
+     ========================================================== */
+  function currentPath() {
+    const h = location.hash || '#/';
+    return h.replace(/^#/, '') || '/';
+  }
+
+  function showOnly(id) {
+    ['viewExplore', 'viewCategories', 'viewPost', 'viewDashboard', 'viewSeller'].forEach(function (v) {
+      const node = document.getElementById(v);
+      if (node) node.hidden = v !== id;
+    });
+    $$('.nav__links a').forEach(function (a) {
+      const r = a.getAttribute('data-route');
+      a.classList.toggle('is-active', r ? (r === '/' ? currentPath() === '/' : currentPath().indexOf(r) === 0) : false);
+    });
+    $$('#mobileMenu a[data-route]').forEach(function (a) {
+      const r = a.getAttribute('data-route');
+      a.classList.toggle('is-on', r ? (r === '/' ? currentPath() === '/' : currentPath().indexOf(r) === 0) : false);
+    });
+  }
+
+  function render() {
+    const path = currentPath();
+    closeMenu();
+
+    if (path === '/' ) {
+      showOnly('viewExplore');
+      if (!state.items.length) loadListings(true);
+      else loadStats();
+      document.title = 'BLUE HUB — Marketplace';
+      return;
+    }
+    if (path === '/categories') {
+      showOnly('viewCategories');
+      paintCategories();
+      document.title = 'Categories — BLUE HUB';
+      return;
+    }
+    if (path === '/post') {
+      showOnly('viewPost');
+      preparePostForm(null);
+      document.title = 'Post a Service — BLUE HUB';
+      return;
+    }
+    if (path.indexOf('/edit/') === 0) {
+      showOnly('viewPost');
+      preparePostForm(path.slice(6));
+      document.title = 'Edit listing — BLUE HUB';
+      return;
+    }
+    if (path === '/dashboard') {
+      showOnly('viewDashboard');
+      renderDashboard();
+      document.title = 'My Dashboard — BLUE HUB';
+      return;
+    }
+    if (path.indexOf('/seller/') === 0) {
+      showOnly('viewSeller');
+      renderSeller(path.slice(8));
+      document.title = 'Creator — BLUE HUB';
+      return;
+    }
+
+    // unknown hash → explore
+    location.replace('hub.html#/');
+  }
+
+  window.addEventListener('hashchange', render);
+
+  /* ==========================================================
+     5. EXPLORE — real rows from public.services
+     ========================================================== */
+  function skeletonGrid() {
+    const grid = $('#grid');
+    grid.textContent = '';
+    for (let i = 0; i < 6; i++) {
+      grid.appendChild(el('div', { class: 'sk' }, [
+        el('div', { class: 'sk__m' }),
+        el('div', { class: 'sk__b' }, [
+          el('div', { class: 'sk__l', style: 'width:40%' }),
+          el('div', { class: 'sk__l', style: 'width:85%' }),
+          el('div', { class: 'sk__l', style: 'width:70%' }),
+          el('div', { class: 'sk__l', style: 'width:50%' })
+        ])
+      ]));
+    }
+  }
+
+  function gridState(kind, title, text, actionLabel, actionHref) {
+    const grid = $('#grid');
+    grid.textContent = '';
+    grid.style.display = 'block';
+    const box = el('div', { class: 'state' + (kind === 'err' ? ' state--err' : '') }, [
+      el('h3', { text: title }),
+      el('p', { text: text })
+    ]);
+    if (actionLabel) {
+      box.appendChild(el('a', { class: 'btn btn--sm', href: actionHref || 'hub.html#/post', text: actionLabel }));
+    }
+    grid.appendChild(box);
+  }
+
+  function buildQuery() {
+    let q = sb.from('services').select('id,user_id,title,description,category,skills,starting_price,currency,image_url,contact_method,contact_value,availability,status,created_at', { count: 'exact' })
+      .eq('status', 'published');
+
+    if (state.q) {
+      const term = state.q.replace(/[,()%*]/g, ' ').trim();
+      if (term) q = q.or('title.ilike.%' + term + '%,description.ilike.%' + term + '%,category.ilike.%' + term + '%');
+    }
+    if (state.category) q = q.eq('category', state.category);
+    if (state.currency) q = q.eq('currency', state.currency);
+    if (state.availability) q = q.eq('availability', state.availability);
+    if (state.min !== null) q = q.gte('starting_price', state.min);
+    if (state.max !== null) q = q.lte('starting_price', state.max);
+
+    if (state.sort === 'price-asc') q = q.order('starting_price', { ascending: true });
+    else if (state.sort === 'price-desc') q = q.order('starting_price', { ascending: false });
+    else q = q.order('created_at', { ascending: false });
+
+    return q.range(state.offset, state.offset + PAGE_SIZE - 1);
+  }
+
+  async function loadListings(reset) {
+    if (!sb) { gridState('err', 'Marketplace unavailable', OFFLINE); return; }
+    if (state.loading) return;
+    state.loading = true;
+    if (reset) {
+      state.offset = 0;
+      state.items = [];
+      skeletonGrid();
+      $('#grid').style.display = '';
+      $('#loadMore').hidden = true;
+      $('#resultCount').textContent = 'Loading services…';
+    } else {
+      const btn = $('#loadMore');
+      btn.disabled = true;
+      btn.textContent = 'Loading…';
+    }
+
+    try {
+      const res = await buildQuery();
+      if (res.error) throw res.error;
+      const rows = res.data || [];
+      state.count = typeof res.count === 'number' ? res.count : rows.length;
+      state.items = reset ? rows : state.items.concat(rows);
+      state.offset = state.items.length;
+
+      await hydrateSellers(rows);
+
+      $('#grid').style.display = '';
+      paintGrid();
+      paintCount();
+    } catch (err) {
+      state.loading = false;
+      gridState('err', 'Services could not be loaded', 'The marketplace service did not answer. ' + (err && err.message ? err.message : '') + ' Try again in a moment.');
+      $('#resultCount').textContent = 'Could not load services.';
+      return;
+    }
+    state.loading = false;
+    const btn = $('#loadMore');
+    btn.disabled = false;
+    btn.textContent = 'Load more';
+  }
+
+  async function hydrateSellers(rows) {
+    const ids = [];
+    rows.forEach(function (r) { if (r.user_id && ids.indexOf(r.user_id) === -1) ids.push(r.user_id); });
+    const missing = ids.filter(function (id) { return !state.sellers[id]; });
+    if (!missing.length || !sb) return;
+    try {
+      const res = await sb.from('public_profiles').select('id,username,full_name,avatar_url').in('id', missing);
+      (res.data || []).forEach(function (p) { state.sellers[p.id] = p; });
+    } catch (e) {}
+  }
+
+  function paintCount() {
+    const n = state.count;
+    const label = n === 1 ? '1 service' : n + ' services';
+    $('#resultCount').textContent = n ? label + ' found' : 'No services found';
+    $('#loadMore').hidden = state.items.length >= state.count || state.items.length === 0;
+  }
+
+  function paintGrid() {
+    const grid = $('#grid');
+    grid.textContent = '';
+    grid.style.display = '';
+
+    if (!state.items.length) {
+      const filtered = state.q || state.category || state.currency || state.availability || state.min !== null || state.max !== null;
+      if (filtered) {
+        gridState('empty', 'Nothing matches those filters', 'Try a different keyword, category or price range — or reset the filters to see everything.');
+        const box = grid.firstChild;
+        const btn = el('button', { class: 'btn btn--sm btn--ghost', type: 'button', text: 'Reset filters', on: { click: resetFilters } });
+        box.appendChild(btn);
+      } else {
+        gridState('empty', 'BLUE HUB is just getting started', 'No services have been published yet. If you have a skill to offer, yours could be the first listing here.',
+          state.user ? 'Post the first service' : 'Sign in to post a service', state.user ? 'hub.html#/post' : 'index.html#/login');
+      }
+      return;
+    }
+
+    state.items.forEach(function (item) { grid.appendChild(cardFor(item)); });
+  }
+
+  function cardFor(item) {
+    const seller = state.sellers[item.user_id] || {};
+    const sellerName = seller.username ? '@' + seller.username : (seller.full_name || 'Creator');
+    const av = el('span', { class: 'seller__av' });
+    if (seller.avatar_url && safeUrl(seller.avatar_url)) av.appendChild(el('img', { src: safeUrl(seller.avatar_url), alt: '' }));
+    else av.textContent = initials(seller.full_name || seller.username || 'B');
+
+    const media = el('div', { class: 'card__media' + (item.image_url && safeUrl(item.image_url) ? '' : ' card__media--empty') });
+    if (item.image_url && safeUrl(item.image_url)) {
+      media.appendChild(el('img', { src: safeUrl(item.image_url), alt: '', loading: 'lazy' }));
+    } else {
+      media.appendChild(el('span', { text: initials(item.category) }));
+    }
+
+    const avMeta = availabilityMeta(item.availability);
+    const body = el('div', { class: 'card__body' }, [
+      el('div', { class: 'card__top' }, [
+        el('span', { class: 'tag tag--cat', text: item.category }),
+        el('span', { class: 'badge ' + avMeta.cls }, [el('i'), document.createTextNode(avMeta.label)])
+      ]),
+      el('h3', { class: 'card__title', text: item.title }),
+      el('p', { class: 'card__desc', text: item.description }),
+      (item.skills && item.skills.length)
+        ? el('div', { class: 'card__skills' }, item.skills.slice(0, 5).map(function (s) { return el('span', { class: 'skill', text: s }); }))
+        : null,
+      el('div', { class: 'card__foot' }, [
+        el('div', { class: 'price' }, [
+          document.createTextNode(money(item.starting_price, item.currency)),
+          el('small', { text: 'Starting price' })
+        ]),
+        el('a', { class: 'seller', href: 'hub.html#/seller/' + item.user_id, title: 'View creator profile' }, [av, el('span', { class: 'seller__name', text: sellerName })])
+      ]),
+      el('div', { class: 'card__actions' }, [
+        el('button', { class: 'btn btn--sm', type: 'button', text: 'Contact seller', on: { click: function () { openContact(item); } } }),
+        el('a', { class: 'btn btn--sm btn--ghost', href: 'hub.html#/seller/' + item.user_id, text: 'Profile' })
+      ])
+    ]);
+
+    return el('article', { class: 'card' }, [media, body]);
+  }
+
+  /* ---------- filters ---------- */
+  function readFilters() {
+    state.q = ($('#q').value || '').trim();
+    state.category = $('#category').value || '';
+    state.currency = $('#currency').value || '';
+    state.availability = $('#availability').value || '';
+    const min = $('#minPrice').value;
+    const max = $('#maxPrice').value;
+    state.min = min === '' ? null : Math.max(0, Number(min));
+    state.max = max === '' ? null : Math.max(0, Number(max));
+    if (state.min !== null && isNaN(state.min)) state.min = null;
+    if (state.max !== null && isNaN(state.max)) state.max = null;
+    state.sort = $('#sort').value || 'newest';
+    paintChips();
+  }
+
+  function resetFilters() {
+    $('#q').value = '';
+    $('#category').value = '';
+    $('#currency').value = '';
+    $('#availability').value = '';
+    $('#minPrice').value = '';
+    $('#maxPrice').value = '';
+    $('#sort').value = 'newest';
+    readFilters();
+    loadListings(true);
+  }
+
+  let searchTimer = null;
+  function debounceSearch() {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () { readFilters(); loadListings(true); }, 320);
+  }
+
+  function paintCategories() {
+    const grid = $('#catGrid');
+    if (!grid) return;
+    grid.textContent = '';
+    CATEGORIES.forEach(function (c) {
+      const card = el('a', { class: 'card', href: 'hub.html#/categories', style: 'padding:18px' }, [
+        el('span', { class: 'mono', text: 'Category' }),
+        el('h3', { class: 'card__title', text: c, style: 'margin-top:8px' }),
+        el('p', { class: 'card__desc', text: 'Browse listings filed under ' + c + '.', style: 'margin-top:6px' })
+      ]);
+      card.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        state.category = c;
+        location.hash = '#/';
+        setTimeout(function () {
+          $('#category').value = c;
+          readFilters();
+          loadListings(true);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 60);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  function paintChips() {
+    const wrap = $('#chips');
+    if (!wrap) return;
+    wrap.textContent = '';
+    const all = el('button', { class: 'chip' + (state.category ? '' : ' is-on'), type: 'button', text: 'All' });
+    all.addEventListener('click', function () {
+      $('#category').value = '';
+      readFilters();
+      loadListings(true);
+    });
+    wrap.appendChild(all);
+    CATEGORIES.forEach(function (c) {
+      const b = el('button', { class: 'chip' + (state.category === c ? ' is-on' : ''), type: 'button', text: c });
+      b.addEventListener('click', function () {
+        $('#category').value = c;
+        readFilters();
+        loadListings(true);
+      });
+      wrap.appendChild(b);
+    });
+  }
+
+  async function loadStats() {
+    if (!sb) return;
+    const el1 = $('#statTotal');
+    const el2 = $('#statSellers');
+    try {
+      const res = await sb.from('services').select('user_id', { count: 'exact', head: false }).eq('status', 'published');
+      const rows = res.data || [];
+      const sellers = {};
+      rows.forEach(function (r) { sellers[r.user_id] = 1; });
+      if (el1) el1.textContent = String(typeof res.count === 'number' ? res.count : rows.length);
+      if (el2) el2.textContent = String(Object.keys(sellers).length);
+    } catch (e) {
+      if (el1) el1.textContent = '0';
+      if (el2) el2.textContent = '0';
+    }
+  }
+
+  /* ==========================================================
+     6. CONTACT SELLER
+     ========================================================== */
+  function openContact(item) {
+    const method = item.contact_method;
+    const value = String(item.contact_value || '');
+    const url = safeUrl(value);
+    const card = el('div', { class: 'modal__card' });
+    const title = 'Contact ' + (item.title ? 'about "' + item.title + '"' : 'this seller');
+
+    card.appendChild(el('h3', { text: title }));
+    card.appendChild(el('p', { class: 'modal__sub', text: 'Shared publicly by the seller — BLUE HUB never shows account emails.' }));
+
+    const label = method === 'discord' ? 'Discord' : method === 'email' ? 'Email' : method === 'portfolio' ? 'Portfolio' : method === 'website' ? 'Website' : 'Contact';
+    card.appendChild(el('span', { class: 'mono', text: label }));
+    card.appendChild(el('div', { class: 'modal__val', text: value }));
+
+    const acts = el('div', { class: 'modal__acts' });
+    let primary = null;
+
+    if (method === 'email') {
+      primary = el('a', { class: 'btn btn--sm', href: 'mailto:' + encodeURIComponent(value), text: 'Open email' });
+    } else if (url) {
+      primary = el('a', { class: 'btn btn--sm', href: url, target: '_blank', rel: 'noopener noreferrer', text: 'Open ' + (method === 'discord' ? 'link' : 'website') });
+    } else if (method === 'discord') {
+      primary = el('button', { class: 'btn btn--sm', type: 'button', text: 'Copy username', on: { click: function () {
+        try { navigator.clipboard.writeText(value); toast('Discord username copied.', 'ok'); }
+        catch (e) { toast('Select the username and copy it manually.', 'bad'); }
+      } } });
+    } else {
+      primary = el('button', { class: 'btn btn--sm', type: 'button', text: 'Copy', on: { click: function () {
+        try { navigator.clipboard.writeText(value); toast('Copied.', 'ok'); } catch (e) {}
+      } } });
+    }
+
+    acts.appendChild(el('button', { class: 'btn btn--sm btn--ghost', type: 'button', text: 'Close', on: { click: closeModal } }));
+    acts.appendChild(primary);
+    card.appendChild(acts);
+
+    const modal = el('div', { class: 'modal', role: 'dialog', 'aria-modal': 'true', on: { click: function (ev) { if (ev.target === modal) closeModal(); } } }, [card]);
+    modal.id = 'contactModal';
+    const existing = $('#contactModal');
+    if (existing) existing.remove();
+    document.body.appendChild(modal);
+    document.addEventListener('keydown', escClose);
+  }
+
+  function escClose(ev) { if (ev.key === 'Escape') closeModal(); }
+
+  function closeModal() {
+    const m = $('#contactModal');
+    if (m) m.remove();
+    document.removeEventListener('keydown', escClose);
+  }
+
+  /* ==========================================================
+     7. POST / EDIT
+     ========================================================== */
+  function fillCategorySelect(select, withAll) {
+    if (!select) return;
+    const current = select.value;
+    select.textContent = '';
+    if (withAll) select.appendChild(el('option', { value: '', text: 'All categories' }));
+    CATEGORIES.forEach(function (c) { select.appendChild(el('option', { value: c, text: c })); });
+    if (current) select.value = current;
+  }
+
+  function contactLabelFor(method) {
+    if (method === 'discord') return { label: 'Discord username', ph: 'yourname or yourname#0001' };
+    if (method === 'email') return { label: 'Public email', ph: 'you@example.com' };
+    if (method === 'portfolio') return { label: 'Portfolio URL', ph: 'https://yoursite.com/work' };
+    if (method === 'website') return { label: 'Website URL', ph: 'https://yoursite.com' };
+    return { label: 'Public contact link', ph: 'https://…' };
+  }
+
+  function syncContactLabel() {
+    const m = $('#fContactMethod').value;
+    const meta = contactLabelFor(m);
+    $('#contactLabel').textContent = meta.label;
+    $('#fContactValue').placeholder = meta.ph;
+  }
+
+  async function preparePostForm(editId) {
+    const gate = $('#postGate');
+    const form = $('#serviceForm');
+
+    if (!state.user) {
+      gate.hidden = false;
+      form.hidden = true;
+      const link = $('#gateSignIn');
+      if (link) {
+        link.onclick = function (ev) { ev.preventDefault(); requireAuth('#/post'); };
+      }
+      return;
+    }
+    gate.hidden = true;
+    form.hidden = false;
+
+    fillCategorySelect($('#fCategory'), false);
+    syncContactLabel();
+
+    state.editing = null;
+    state.imageUrl = null;
+    resetFormMessages();
+    $('#imgPrev').textContent = 'No image';
+    $('#imgClear').hidden = true;
+    $('#imgProg').hidden = true;
+    $('#fImage').value = '';
+    $('#cancelEdit').hidden = true;
+    $('#submitBtn').textContent = 'Publish service';
+    $('#postHead').querySelector('h1').textContent = 'Post a Service';
+    $('#postHead').querySelector('p').textContent = 'Describe what you do, set a starting price, and choose how clients should reach you. Your listing goes live immediately.';
+
+    if (!editId) {
+      $('#fTitle').value = '';
+      $('#fDesc').value = '';
+      $('#fSkills').value = '';
+      $('#fPrice').value = '';
+      $('#fCurrency').value = 'INR';
+      $('#fAvailability').value = 'available';
+      $('#fContactMethod').value = 'discord';
+      $('#fContactValue').value = '';
+      $('#fCategory').value = CATEGORIES[0];
+      $('#descCount').textContent = '0';
+      return;
+    }
+
+    // edit: load the row (RLS only returns rows this user may update)
+    $('#submitBtn').disabled = true;
+    $('#submitBtn').textContent = 'Loading…';
+    try {
+      const res = await sb.from('services').select('*').eq('id', editId).maybeSingle();
+      if (res.error) throw res.error;
+      if (!res.data) throw new Error('This listing was not found or does not belong to your account.');
+      const row = res.data;
+      if (row.user_id !== state.user.id) throw new Error('You can only edit your own listings.');
+
+      state.editing = row.id;
+      state.imageUrl = row.image_url || null;
+      $('#fTitle').value = row.title || '';
+      $('#fDesc').value = row.description || '';
+      $('#fSkills').value = (row.skills || []).join(', ');
+      $('#fPrice').value = row.starting_price;
+      $('#fCurrency').value = row.currency;
+      $('#fAvailability').value = row.availability;
+      $('#fContactMethod').value = row.contact_method;
+      $('#fContactValue').value = row.contact_value || '';
+      $('#fCategory').value = row.category;
+      if (CATEGORIES.indexOf(row.category) === -1) {
+        $('#fCategory').appendChild(el('option', { value: row.category, text: row.category }));
+        $('#fCategory').value = row.category;
+      }
+      $('#descCount').textContent = String((row.description || '').length);
+      if (row.image_url) {
+        const prev = $('#imgPrev');
+        prev.textContent = '';
+        prev.appendChild(el('img', { src: safeUrl(row.image_url) || '', alt: '' }));
+        $('#imgClear').hidden = false;
+      }
+      syncContactLabel();
+      $('#submitBtn').textContent = 'Save changes';
+      $('#cancelEdit').hidden = false;
+      $('#postHead').querySelector('h1').textContent = 'Edit listing';
+      $('#postHead').querySelector('p').textContent = 'Update the details below. Changes appear on your public card immediately.';
+    } catch (err) {
+      showStatus('formStatus', err && err.message ? err.message : 'That listing could not be loaded.', 'bad');
+      $('#submitBtn').textContent = 'Publish service';
+    } finally {
+      $('#submitBtn').disabled = false;
+    }
+  }
+
+  function resetFormMessages() {
+    ['eTitle', 'eCategory', 'eDesc', 'eSkills', 'ePrice', 'eCurrency', 'eAvailability', 'eContactMethod', 'eContactValue', 'eImage'].forEach(function (id) {
+      const n = document.getElementById(id);
+      if (n) n.textContent = '';
+    });
+    const s = $('#formStatus');
+    if (s) { s.textContent = ''; s.className = 'status'; }
+  }
+
+  function showStatus(id, msg, kind) {
+    const n = document.getElementById(id);
+    if (!n) return;
+    n.textContent = msg || '';
+    n.className = 'status' + (kind ? ' status--' + kind : '');
+  }
+
+  function validateForm() {
+    resetFormMessages();
+    let ok = true;
+    const title = $('#fTitle').value.trim();
+    const category = $('#fCategory').value;
+    const desc = $('#fDesc').value.trim();
+    const skillsRaw = $('#fSkills').value.trim();
+    const priceRaw = $('#fPrice').value;
+    const currency = $('#fCurrency').value;
+    const contactMethod = $('#fContactMethod').value;
+    const contactValue = $('#fContactValue').value.trim();
+
+    if (title.length < 6 || title.length > 90) { $('#eTitle').textContent = 'Use a title between 6 and 90 characters.'; ok = false; }
+    if (!category) { $('#eCategory').textContent = 'Choose a category.'; ok = false; }
+    if (desc.length < 30) { $('#eDesc').textContent = 'Describe the service in at least 30 characters.'; ok = false; }
+    if (desc.length > 3000) { $('#eDesc').textContent = 'Keep the description under 3000 characters.'; ok = false; }
+
+    const skills = skillsRaw ? skillsRaw.split(',').map(function (s) { return s.trim(); }).filter(Boolean) : [];
+    if (skills.length > 8) { $('#eSkills').textContent = 'List at most 8 skills.'; ok = false; }
+    if (skills.some(function (s) { return s.length > 24; })) { $('#eSkills').textContent = 'Each skill should be 24 characters or fewer.'; ok = false; }
+
+    const price = Number(priceRaw);
+    if (priceRaw === '' || isNaN(price) || price < 0) { $('#ePrice').textContent = 'Enter a starting price of 0 or more.'; ok = false; }
+    else if (price > 100000000) { $('#ePrice').textContent = 'That price is too large.'; ok = false; }
+    if (currency !== 'INR' && currency !== 'USD') { $('#eCurrency').textContent = 'Choose INR or USD.'; ok = false; }
+
+    if (contactMethod === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactValue)) {
+      $('#eContactValue').textContent = 'Enter a valid public email address.'; ok = false;
+    }
+    if ((contactMethod === 'portfolio' || contactMethod === 'website' || contactMethod === 'other') && !safeUrl(contactValue)) {
+      $('#eContactValue').textContent = 'Enter a full http(s) link, e.g. https://example.com.'; ok = false;
+    }
+    if (contactMethod === 'discord' && (contactValue.length < 2 || contactValue.length > 64)) {
+      $('#eContactValue').textContent = 'Enter your Discord username (2–64 characters).'; ok = false;
+    }
+    if (!contactValue) { $('#eContactValue').textContent = 'Add the contact detail clients should use.'; ok = false; }
+
+    if (!ok) return null;
+    return {
+      title: title,
+      category: category,
+      description: desc,
+      skills: skills,
+      starting_price: price,
+      currency: currency,
+      contact_method: contactMethod,
+      contact_value: contactValue,
+      availability: $('#fAvailability').value
+    };
+  }
+
+  async function uploadImageIfAny() {
+    const input = $('#fImage');
+    if (!input || !input.files || !input.files.length) return state.imageUrl;
+    const file = input.files[0];
+    if (IMAGE_TYPES.indexOf(file.type) === -1) throw new Error('Choose a PNG, JPG, WebP or GIF image.');
+    if (file.size > MAX_IMAGE) throw new Error('That image is larger than 3 MB.');
+
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg';
+    const path = state.user.id + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+
+    const prog = $('#imgProg');
+    if (prog) prog.hidden = false;
+    try {
+      const up = await sb.storage.from('hub-images').upload(path, file, { cacheControl: '3600', upsert: false, contentType: file.type });
+      if (up.error) throw up.error;
+      const pub = sb.storage.from('hub-images').getPublicUrl(path);
+      return pub && pub.data ? pub.data.publicUrl : null;
+    } finally {
+      if (prog) prog.hidden = true;
+    }
+  }
+
+  async function submitService(ev) {
+    ev.preventDefault();
+    if (!sb || !state.user) { requireAuth('#/post'); return; }
+
+    const btn = $('#submitBtn');
+    const data = validateForm();
+    if (!data) { showStatus('formStatus', 'Please fix the highlighted fields.', 'bad'); return; }
+    if (btn.disabled) return;
+
+    btn.disabled = true;
+    const original = btn.textContent;
+    btn.textContent = '';
+
+    try {
+      btn.textContent = 'Uploading image…';
+      const imageUrl = await uploadImageIfAny();
+      btn.textContent = state.editing ? 'Saving…' : 'Publishing…';
+
+      const payload = Object.assign({}, data, { image_url: imageUrl || null });
+
+      let res;
+      if (state.editing) {
+        res = await sb.from('services').update(payload).eq('id', state.editing).select('id').maybeSingle();
+      } else {
+        res = await sb.from('services').insert(Object.assign({ user_id: state.user.id, status: 'published' }, payload)).select('id').maybeSingle();
+      }
+      if (res.error) throw res.error;
+      if (!res.data) throw new Error('The save did not go through. You may only edit your own listings.');
+
+      const wasEditing = !!state.editing;
+      showStatus('formStatus', wasEditing ? 'Listing updated.' : 'Your service is live on BLUE HUB.', 'ok');
+      toast(wasEditing ? 'Listing updated.' : 'Service published.', 'ok');
+      state.items = [];
+      state.offset = 0;
+      setTimeout(function () { location.hash = '#/dashboard'; }, 700);
+    } catch (err) {
+      const raw = (err && (err.message || err.details)) || '';
+      showStatus('formStatus', raw ? ('Could not save: ' + raw) : 'Could not save the listing. Please try again.', 'bad');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = state.editing ? 'Save changes' : 'Publish service';
+      if (original === 'Loading…') btn.textContent = 'Publish service';
+    }
+  }
+
+  /* ==========================================================
+     8. DASHBOARD
+     ========================================================== */
+  async function renderDashboard() {
+    const gate = $('#dashGate');
+    const body = $('#dashBody');
+    if (!state.user) {
+      gate.hidden = false;
+      body.hidden = true;
+      const link = $('#dashSignIn');
+      if (link) link.onclick = function (ev) { ev.preventDefault(); requireAuth('#/dashboard'); };
+      return;
+    }
+    gate.hidden = true;
+    body.hidden = false;
+    $('#dashWho').textContent = 'Signed in as ' + displayName() + (state.profile && state.profile.username ? ' · @' + state.profile.username : '');
+
+    const list = $('#myList');
+    list.textContent = '';
+    list.appendChild(el('div', { class: 'sk__l', style: 'width:60%' }));
+
+    try {
+      const res = await sb.from('services').select('*').eq('user_id', state.user.id).order('created_at', { ascending: false });
+      if (res.error) throw res.error;
+      const rows = res.data || [];
+
+      $('#kTotal').textContent = String(rows.length);
+      $('#kLive').textContent = String(rows.filter(function (r) { return r.status === 'published'; }).length);
+      $('#kOff').textContent = String(rows.filter(function (r) { return r.availability === 'unavailable'; }).length);
+      $('#kViews').textContent = '—';
+
+      list.textContent = '';
+      if (!rows.length) {
+        list.appendChild(el('div', { class: 'state' }, [
+          el('h3', { text: 'No listings yet' }),
+          el('p', { text: 'Publish your first service and it will show up here, in Explore, and on your creator profile.' }),
+          el('a', { class: 'btn btn--sm', href: 'hub.html#/post', text: 'Create a listing' })
+        ]));
+        return;
+      }
+
+      rows.forEach(function (row) {
+        const thumb = el('div', { class: 'myrow__thumb', text: initials(row.category) });
+        if (row.image_url && safeUrl(row.image_url)) {
+          thumb.textContent = '';
+          thumb.appendChild(el('img', { src: safeUrl(row.image_url), alt: '', loading: 'lazy' }));
+        }
+        const meta = availabilityMeta(row.availability);
+        const edit = el('a', { class: 'btn btn--sm btn--ghost', href: 'hub.html#/edit/' + row.id, text: 'Edit' });
+        const del = el('button', { class: 'btn btn--sm btn--danger', type: 'button', text: 'Delete', on: { click: function () { deleteListing(row, del); } } });
+
+        list.appendChild(el('div', { class: 'myrow' }, [
+          thumb,
+          el('div', { class: 'myrow__main' }, [
+            el('p', { class: 'myrow__t', text: row.title }),
+            el('p', { class: 'myrow__m' }, [
+              el('span', { text: money(row.starting_price, row.currency) }),
+              el('span', { class: 'badge ' + meta.cls }, [el('i'), document.createTextNode(meta.label)]),
+              el('span', { text: row.category })
+            ])
+          ]),
+          el('div', { class: 'myrow__acts' }, [edit, del])
+        ]));
+      });
+    } catch (err) {
+      list.textContent = '';
+      const box = el('div', { class: 'state state--err' }, [
+        el('h3', { text: 'Your listings could not be loaded' }),
+        el('p', { text: (err && err.message) || 'Please try again in a moment.' })
+      ]);
+      list.appendChild(box);
+    }
+  }
+
+  async function deleteListing(row, btn) {
+    if (!window.confirm('Delete "' + row.title + '" permanently? This cannot be undone.')) return;
+    btn.disabled = true;
+    btn.textContent = 'Deleting…';
+    try {
+      const res = await sb.from('services').delete().eq('id', row.id);
+      if (res.error) throw res.error;
+      toast('Listing deleted.', 'ok');
+      state.items = [];
+      renderDashboard();
+    } catch (err) {
+      toast('Could not delete: ' + ((err && err.message) || 'unknown error'), 'bad');
+      btn.disabled = false;
+      btn.textContent = 'Delete';
+    }
+  }
+
+  /* ==========================================================
+     9. SELLER PROFILE
+     ========================================================== */
+  async function renderSeller(id) {
+    const head = $('#sellerHead');
+    const grid = $('#sellerGrid');
+    head.textContent = '';
+    grid.textContent = '';
+    if (!id) { location.hash = '#/'; return; }
+    head.appendChild(el('div', { class: 'sk__l', style: 'width:220px;height:64px' }));
+
+    try {
+      let person = state.sellers[id] || null;
+      if (!person) {
+        const p = await sb.from('public_profiles').select('id,username,full_name,avatar_url').eq('id', id).maybeSingle();
+        person = p && p.data ? p.data : null;
+      }
+      const name = person ? (person.full_name || person.username || 'Creator') : 'Creator';
+      const av = el('div', { class: 'seller-head__av' });
+      if (person && person.avatar_url && safeUrl(person.avatar_url)) av.appendChild(el('img', { src: safeUrl(person.avatar_url), alt: '' }));
+      else av.textContent = initials(name);
+
+      head.textContent = '';
+      head.appendChild(av);
+      head.appendChild(el('div', {}, [
+        el('h1', { text: name }),
+        el('p', { text: (person && person.username ? '@' + person.username + ' · ' : '') + 'Creator on BLUE HUB' })
+      ]));
+
+      const res = await sb.from('services').select('id,user_id,title,description,category,skills,starting_price,currency,image_url,contact_method,contact_value,availability,status,created_at')
+        .eq('user_id', id).eq('status', 'published').order('created_at', { ascending: false });
+      if (res.error) throw res.error;
+      const rows = res.data || [];
+      state.sellers[id] = person || { id: id };
+
+      if (!rows.length) {
+        grid.appendChild(el('div', { class: 'state' }, [
+          el('h3', { text: 'No published services yet' }),
+          el('p', { text: 'This creator has not published a listing on BLUE HUB.' }),
+          el('a', { class: 'btn btn--sm btn--ghost', href: 'hub.html#/', text: 'Back to explore' })
+        ]));
+        return;
+      }
+      rows.forEach(function (row) { grid.appendChild(cardFor(row)); });
+    } catch (err) {
+      head.textContent = '';
+      grid.appendChild(el('div', { class: 'state state--err' }, [
+        el('h3', { text: 'This profile could not be loaded' }),
+        el('p', { text: (err && err.message) || 'Please try again.' })
+      ]));
+    }
+  }
+
+  /* ==========================================================
+     10. WIRING
+     ========================================================== */
+  function closeMenu() {
+    const m = $('#mobileMenu');
+    if (m) m.hidden = true;
+    const b = $('#menuBtn');
+    if (b) b.setAttribute('aria-expanded', 'false');
+  }
+
+  const menuBtn = $('#menuBtn');
+  if (menuBtn) menuBtn.addEventListener('click', function () {
+    const m = $('#mobileMenu');
+    const open = m.hidden;
+    m.hidden = !open;
+    menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
+  $$('#mobileMenu a[data-route]').forEach(function (a) { a.addEventListener('click', closeMenu); });
+
+  fillCategorySelect($('#category'), true);
+  fillCategorySelect($('#fCategory'), false);
+  paintChips();
+
+  const qEl = $('#q');
+  if (qEl) qEl.addEventListener('input', debounceSearch);
+  ['#category', '#currency', '#availability', '#sort'].forEach(function (sel) {
+    const n = $(sel);
+    if (n) n.addEventListener('change', function () { readFilters(); loadListings(true); });
+  });
+  ['#minPrice', '#maxPrice'].forEach(function (sel) {
+    const n = $(sel);
+    if (n) n.addEventListener('input', debounceSearch);
+  });
+  const resetBtn = $('#resetFilters');
+  if (resetBtn) resetBtn.addEventListener('click', resetFilters);
+  const moreBtn = $('#loadMore');
+  if (moreBtn) moreBtn.addEventListener('click', function () { loadListings(false); });
+
+  const desc = $('#fDesc');
+  if (desc) desc.addEventListener('input', function () { $('#descCount').textContent = String(desc.value.length); });
+  const cm = $('#fContactMethod');
+  if (cm) cm.addEventListener('change', syncContactLabel);
+
+  const imgInput = $('#fImage');
+  if (imgInput) imgInput.addEventListener('change', function () {
+    const prev = $('#imgPrev');
+    prev.textContent = '';
+    if (!imgInput.files || !imgInput.files.length) { prev.textContent = 'No image'; $('#imgClear').hidden = true; return; }
+    const f = imgInput.files[0];
+    if (IMAGE_TYPES.indexOf(f.type) === -1 || f.size > MAX_IMAGE) {
+      $('#eImage').textContent = IMAGE_TYPES.indexOf(f.type) === -1 ? 'Choose a PNG, JPG, WebP or GIF.' : 'Image is larger than 3 MB.';
+      imgInput.value = '';
+      prev.textContent = 'No image';
+      return;
+    }
+    $('#eImage').textContent = '';
+    const url = URL.createObjectURL(f);
+    prev.appendChild(el('img', { src: url, alt: '' }));
+    $('#imgClear').hidden = false;
+  });
+
+  const imgClear = $('#imgClear');
+  if (imgClear) imgClear.addEventListener('click', function () {
+    $('#fImage').value = '';
+    state.imageUrl = null;
+    $('#imgPrev').textContent = 'No image';
+    imgClear.hidden = true;
+  });
+
+  const cancelEdit = $('#cancelEdit');
+  if (cancelEdit) cancelEdit.addEventListener('click', function () { location.hash = '#/dashboard'; });
+
+  const form = $('#serviceForm');
+  if (form) form.addEventListener('submit', submitService);
+
+  const postBtn = $('#postBtnTop');
+  if (postBtn) postBtn.addEventListener('click', function (ev) {
+    if (!state.user) { ev.preventDefault(); requireAuth('#/post'); }
+  });
+
+  /* ==========================================================
+     11. BOOT
+     ========================================================== */
+  (async function boot() {
+    if (!sb) {
+      gridState('err', 'Marketplace unavailable', OFFLINE);
+      return;
+    }
+    await loadSession();
+    if (sb.auth && sb.auth.onAuthStateChange) {
+      sb.auth.onAuthStateChange(function () {
+        setTimeout(function () { loadSession(); }, 0);
+      });
+    }
+    render();
+    if (currentPath() === '/') loadListings(true);
+    loadStats();
+  })();
+})();
+</script>
+</body>
+</html>
