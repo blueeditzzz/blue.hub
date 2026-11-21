@@ -145,6 +145,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 }
 .nav__links a:hover,.nav__links a.is-active{color:var(--ivory)}
 .nav__links a:hover::after,.nav__links a.is-active::after{right:0}
+.nav__links a.nav__hub::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--red);margin-right:6px;vertical-align:middle;flex:none}
 
 .nav__cta{flex:none}
 
@@ -1244,6 +1245,7 @@ html.is-smoothscroll{scroll-behavior:auto}
       <a href="#education" data-nav>Education</a>
       <a href="#certification" data-nav>Certification</a>
       <a href="#services" data-nav>Services</a>
+      <a href="hub.html" class="nav__hub">BLUE HUB</a>
       <a href="#pricing" data-nav>Pricing</a>
       <a href="#reviews" data-nav>Reviews</a>
       <a href="#contact" data-nav>Contact</a>
@@ -1301,9 +1303,10 @@ html.is-smoothscroll{scroll-behavior:auto}
     <a href="#education"><span>04</span>Education</a>
     <a href="#certification"><span>05</span>Certification</a>
     <a href="#services"><span>06</span>Services</a>
-    <a href="#pricing"><span>07</span>Pricing</a>
-    <a href="#reviews"><span>08</span>Reviews</a>
-    <a href="#contact"><span>09</span>Contact</a>
+    <a href="hub.html"><span>07</span>BLUE HUB</a>
+    <a href="#pricing"><span>08</span>Pricing</a>
+    <a href="#reviews"><span>09</span>Reviews</a>
+    <a href="#contact"><span>10</span>Contact</a>
   </nav>
   <div class="menu__account" id="menuAccount" hidden>
     <a href="#/profile">My Profile</a>
@@ -2858,6 +2861,16 @@ html.is-smoothscroll{scroll-behavior:auto}
       }
       await syncProfile(res.data.user, true);
       authReady = true;
+
+      /* came here from BLUE HUB: send them back to the page they wanted */
+      let hubReturn = null;
+      try { hubReturn = sessionStorage.getItem('hub.return'); } catch (e) {}
+      if (hubReturn) {
+        try { sessionStorage.removeItem('hub.return'); } catch (e) {}
+        location.href = 'hub.html' + (hubReturn.charAt(0) === '#' ? hubReturn : '#' + hubReturn);
+        return;
+      }
+
       toast('Welcome back, ' + String(profile.name).split(' ')[0] + '.', 'ok');
       const target = pending || '#/';
       pending = null;
