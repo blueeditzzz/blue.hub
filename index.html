@@ -658,6 +658,11 @@ ul,ol{margin:0;padding:0;list-style:none}
 .js.intro-pending .spec,
 .js.intro-pending .hero__strip{animation-play-state:paused}
 
+.profile-card__bio{
+  margin:8px 0 0;font-size:13px;line-height:1.6;color:var(--muted);
+  display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;
+}
+
 /* ============================================================
    AUTH SHELL
    ============================================================ */
@@ -971,12 +976,12 @@ html.is-smoothscroll{scroll-behavior:auto}
     <div class="auth__pitch">
       <span class="mono auth__kicker">Private portfolio</span>
       <h1>Building the<br /><em>digital</em> future.</h1>
-      <p>This portfolio sits behind a local account. Create one in this browser and step inside — no server, no tracking, nothing leaves your device.</p>
+      <p>This portfolio sits behind a private account. Sign in with your email and password to step inside — your profile follows you to any device.</p>
     </div>
     <ul class="auth__notes">
-      <li><span>Accounts</span><b>Stored in this browser</b></li>
-      <li><span>Passwords</span><b>PBKDF2 hashed</b></li>
-      <li><span>Devices</span><b>No sync between devices</b></li>
+      <li><span>Accounts</span><b>Secured by Supabase</b></li>
+      <li><span>Passwords</span><b>Never stored in the browser</b></li>
+      <li><span>Devices</span><b>Sign in from anywhere</b></li>
     </ul>
   </div>
 
@@ -985,10 +990,10 @@ html.is-smoothscroll{scroll-behavior:auto}
       <!-- LOGIN -->
       <section id="loginView">
         <h2>Sign in</h2>
-        <p class="auth__lede">Use your email or username to continue.</p>
+        <p class="auth__lede">Sign in with the email address you signed up with.</p>
         <form id="loginForm" novalidate>
           <div class="field" id="liIdField">
-            <label for="liId">Email or username</label>
+            <label for="liId">Email address</label>
             <input id="liId" name="identifier" type="text" autocomplete="username" placeholder="you@example.com" aria-describedby="liIdErr" />
             <span class="field__err" id="liIdErr" role="alert"></span>
           </div>
@@ -1017,7 +1022,7 @@ html.is-smoothscroll{scroll-behavior:auto}
       <!-- REGISTER -->
       <section id="registerView" hidden>
         <h2>Create account</h2>
-        <p class="auth__lede">Your account stays on this device.</p>
+        <p class="auth__lede">One account, on every device you sign in from.</p>
         <form id="registerForm" novalidate>
           <div class="field" id="rgNameField">
             <label for="rgName">Full name</label>
@@ -1070,7 +1075,7 @@ html.is-smoothscroll{scroll-behavior:auto}
         <p class="auth__switch">Already have an account? <a href="#/login">Sign in</a></p>
       </section>
     </div>
-    <p class="auth__legal"><b>Please read:</b> this is a frontend-only demo. Accounts live in this browser's localStorage and cannot protect data from anyone who controls this device. There is no email server, so no reset or confirmation email is sent.</p>
+    <p class="auth__legal"><b>Please read:</b> accounts are handled by Supabase Auth over an encrypted connection. Your password is never written to this page or this browser's storage, and confirmation plus password-recovery emails are sent by Supabase.</p>
   </div>
 </div>
 
@@ -1078,18 +1083,49 @@ html.is-smoothscroll{scroll-behavior:auto}
 <div class="auth" id="forgotShell" hidden style="grid-template-columns:1fr;place-items:center;padding:24px;background:rgba(10,10,11,.94)">
   <div class="card" style="max-width:460px;width:100%">
     <h2 class="card__h" style="font-size:20px">Password recovery</h2>
-    <p class="card__sub">There is no server, so there is no reset email to send. Your account exists only in this browser, and nothing here can prove you own it.</p>
-    <p class="note" style="margin-bottom:18px">If you're still signed in, change the password in <b>Account settings</b>. If you're locked out, the only honest option is to delete this browser's local account and register again — the profile, picture and history are lost with it.</p>
+    <p class="card__sub">Enter the email you signed up with and we will send a secure link to set a new password.</p>
+    <p class="note" style="margin-bottom:18px">The link can only be used once and expires after a short while. If it does not arrive, check your spam folder before requesting another.</p>
     <div class="field" id="fgEmailField">
-      <label for="fgEmail">Confirm the account email</label>
+      <label for="fgEmail">Account email</label>
       <input id="fgEmail" type="email" autocomplete="email" placeholder="you@example.com" aria-describedby="fgEmailErr" />
       <span class="field__err" id="fgEmailErr" role="alert"></span>
     </div>
     <div class="card__foot">
-      <button type="button" class="btn" id="fgDelete">Delete local account</button>
+      <button type="button" class="btn" id="fgSend">Send recovery link</button>
       <button type="button" class="btn btn--ghost" id="fgClose">Back to sign in</button>
     </div>
     <div class="form__status" id="fgStatus" role="status" aria-live="polite"></div>
+  </div>
+</div>
+
+<!-- ============ SET NEW PASSWORD (recovery link) ============ -->
+<div class="auth" id="resetShell" hidden style="grid-template-columns:1fr;place-items:center;padding:24px;background:rgba(10,10,11,.94)">
+  <div class="card" style="max-width:460px;width:100%">
+    <h2 class="card__h" style="font-size:20px">Set a new password</h2>
+    <p class="card__sub">You opened a recovery link. Choose a new password for your account.</p>
+    <form id="resetForm" novalidate>
+      <div class="field" id="rsPwField">
+        <label for="rsPw">New password <span class="opt">8+ chars</span></label>
+        <div class="field__pw">
+          <input id="rsPw" type="password" autocomplete="new-password" placeholder="At least 8 characters" aria-describedby="rsPwErr" />
+          <button type="button" class="pw-toggle" data-pw="rsPw" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+        <span class="field__err" id="rsPwErr" role="alert"></span>
+      </div>
+      <div class="field" id="rsPw2Field">
+        <label for="rsPw2">Confirm new password</label>
+        <div class="field__pw">
+          <input id="rsPw2" type="password" autocomplete="new-password" placeholder="Repeat your password" aria-describedby="rsPw2Err" />
+          <button type="button" class="pw-toggle" data-pw="rsPw2" aria-label="Show password" aria-pressed="false">Show</button>
+        </div>
+        <span class="field__err" id="rsPw2Err" role="alert"></span>
+      </div>
+      <button type="submit" class="btn btn--block" id="rsSave">Save new password</button>
+    </form>
+    <div class="card__foot" style="margin-top:14px">
+      <button type="button" class="btn btn--ghost" id="rsCancel">Back to sign in</button>
+    </div>
+    <div class="form__status" id="rsStatus" role="status" aria-live="polite"></div>
   </div>
 </div>
 
@@ -1897,10 +1933,11 @@ html.is-smoothscroll{scroll-behavior:auto}
         <div class="avatar avatar--lg" id="profAvatar">H</div>
         <p class="profile-card__name" id="profName">—</p>
         <p class="profile-card__handle" id="profHandle">@—</p>
+        <p class="profile-card__bio" id="profBio" hidden></p>
         <p class="profile-card__email" id="profEmail">—</p>
         <dl class="profile-card__meta">
           <div><dt>Member since</dt><dd id="profJoined">—</dd></div>
-          <div><dt>Account</dt><dd>Local · this browser</dd></div>
+          <div><dt>Account</dt><dd>Supabase</dd></div>
           <div><dt>Session</dt><dd id="profSession">—</dd></div>
         </dl>
         <a class="btn btn--ghost btn--sm btn--block" href="#/settings">Edit profile</a>
@@ -1909,7 +1946,7 @@ html.is-smoothscroll{scroll-behavior:auto}
       <div class="stack">
         <section class="card">
           <h2 class="card__h">Profile picture</h2>
-          <p class="card__sub">PNG, JPG or WEBP, up to 2 MB. Stored in this browser's IndexedDB.</p>
+          <p class="card__sub">PNG, JPG or WEBP, up to 2 MB. Uploaded to your account's private folder.</p>
           <div class="picker">
             <div class="picker__preview" id="ppPreview">H</div>
             <div class="picker__actions">
@@ -1925,7 +1962,7 @@ html.is-smoothscroll{scroll-behavior:auto}
 
         <section class="card">
           <h2 class="card__h">Display name &amp; username</h2>
-          <p class="card__sub">Your username is unique across every account saved in this browser.</p>
+          <p class="card__sub">Your username is your public handle and is unique across the whole site. You sign in with your email.</p>
           <form id="identityForm" novalidate>
             <div class="field" id="pfNameField">
               <label for="pfName">Display name</label>
@@ -1938,10 +1975,15 @@ html.is-smoothscroll{scroll-behavior:auto}
               <span class="field__err" id="pfUserErr" role="alert"></span>
               <span class="avail" id="pfUserAvail"></span>
             </div>
+            <div class="field" id="pfBioField">
+              <label for="pfBio">Short bio <span class="opt">optional</span></label>
+              <textarea id="pfBio" maxlength="280" rows="3" placeholder="A line or two about you." aria-describedby="pfBioErr"></textarea>
+              <span class="field__err" id="pfBioErr" role="alert"></span>
+            </div>
             <div class="field" id="pfEmailField">
               <label for="pfEmail">Email address <span class="opt">read only</span></label>
               <input id="pfEmail" type="email" readonly aria-describedby="pfEmailHint" />
-              <p class="hint" id="pfEmailHint">The sign-in email can't be changed in a local-only account.</p>
+              <p class="hint" id="pfEmailHint">Your sign-in email is managed by Supabase Auth.</p>
             </div>
             <div class="card__foot">
               <button type="submit" class="btn" id="pfSave">Save changes</button>
@@ -1981,7 +2023,7 @@ html.is-smoothscroll{scroll-behavior:auto}
       <div class="stack">
         <section class="card">
           <h2 class="card__h">Password &amp; security</h2>
-          <p class="card__sub">Changing your password re-hashes it with a new salt. Old passwords are never stored or shown.</p>
+          <p class="card__sub">Confirm your current password, then choose a new one. Nothing is stored in the browser.</p>
           <form id="passwordForm" novalidate>
             <div class="field" id="scCurField">
               <label for="scCur">Current password</label>
@@ -2020,13 +2062,13 @@ html.is-smoothscroll{scroll-behavior:auto}
           <h2 class="card__h">How this account works</h2>
           <p class="card__sub">Read this before you rely on it for anything important.</p>
           <div class="note">
-            <b>Frontend-only demo.</b> Your account is a JSON record in this browser's localStorage, and your picture sits in IndexedDB. Passwords are hashed with PBKDF2-SHA256 (150,000 iterations, random salt), so no plain-text password is ever written — but anyone with access to this device can edit the stored data directly. This is not secure authentication and it is not a real login gateway. Accounts do not sync between browsers or devices, and no email is ever sent.
+            <b>Real accounts, real sessions.</b> Sign-up, sign-in and password recovery run through Supabase Auth over HTTPS, so your password never touches this page or this browser's storage. Your profile is one row in a database table that only your account can read or change, and your picture sits in a storage folder only your account can write to. Sessions refresh automatically; <b>Remember me</b> keeps you signed in on this device until you sign out.
           </div>
         </section>
 
         <section class="card danger">
           <h2 class="card__h">Account management</h2>
-          <p class="card__sub">Deleting removes this account, its profile and its picture from this browser. It can't be undone.</p>
+          <p class="card__sub">Deleting removes your account, its profile and its picture from Supabase. It can't be undone.</p>
           <form id="deleteForm" novalidate>
             <div class="field" id="sdField">
               <label for="sdConfirm">Type your username to confirm</label>
@@ -2034,7 +2076,7 @@ html.is-smoothscroll{scroll-behavior:auto}
               <span class="field__err" id="sdErr" role="alert"></span>
             </div>
             <div class="card__foot">
-              <button type="submit" class="btn" id="sdDelete">Delete local account</button>
+              <button type="submit" class="btn" id="sdDelete">Delete my account</button>
             </div>
           </form>
           <div class="form__status" id="sdStatus" role="status" aria-live="polite"></div>
@@ -2069,6 +2111,7 @@ html.is-smoothscroll{scroll-behavior:auto}
 </button>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <noscript><p style="padding:20px;color:#F2EFE9;background:#131315;border-top:1px solid #242428">This site needs JavaScript for the account system and the portfolio itself.</p></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script>
 (function () {
   'use strict';
@@ -2079,10 +2122,7 @@ html.is-smoothscroll{scroll-behavior:auto}
   const $ = function (sel, root) { return (root || document).querySelector(sel); };
   const $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
   const body = document.body;
-  const KEY_ACCOUNTS = 'hp.accounts.v1';
-  const KEY_SESSION = 'hp.session.v1';
   const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const HAS_SUBTLE = !!(window.crypto && window.crypto.subtle);
   const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   const USER_RE = /^[a-zA-Z0-9_]{3,20}$/;
   let pending = null;
@@ -2092,34 +2132,6 @@ html.is-smoothscroll{scroll-behavior:auto}
     const parts = String(name || '?').trim().split(/\s+/).slice(0, 2);
     return parts.map(function (p) { return p.charAt(0).toUpperCase(); }).join('') || '?';
   }
-
-  function hexFrom(buf) {
-    return Array.prototype.map.call(new Uint8Array(buf), function (b) {
-      return ('0' + b.toString(16)).slice(-2);
-    }).join('');
-  }
-  function bytesFrom(hex) {
-    const out = new Uint8Array(hex.length / 2);
-    for (let i = 0; i < out.length; i++) out[i] = parseInt(hex.substr(i * 2, 2), 16);
-    return out;
-  }
-  function randomHex(n) {
-    const a = new Uint8Array(n);
-    crypto.getRandomValues(a);
-    return hexFrom(a.buffer);
-  }
-
-  async function hashPassword(password, saltHex, iterations) {
-    const enc = new TextEncoder();
-    const key = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']);
-    const bits = await crypto.subtle.deriveBits(
-      { name: 'PBKDF2', salt: bytesFrom(saltHex), iterations: iterations, hash: 'SHA-256' },
-      key,
-      256
-    );
-    return hexFrom(bits);
-  }
-  const ITERATIONS = 150000;
 
   function toast(msg, kind) {
     const el = $('#toast');
@@ -2146,127 +2158,198 @@ html.is-smoothscroll{scroll-behavior:auto}
     if (f) f.classList.toggle('is-invalid', !!msg);
     if (e) e.textContent = msg || '';
   }
+  function busy(btn, label) {
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="btn__spin"></span> ' + label;
+  }
+  function idle(btn, label) {
+    if (!btn) return;
+    btn.disabled = false;
+    btn.textContent = label;
+  }
 
   /* ==========================================================
-     1. STORAGE
+     1. SUPABASE CLIENT
+     Only the publishable (anon) key lives here. The service-role
+     secret must never be shipped to a browser.
      ========================================================== */
-  function getAccounts() {
-    try {
-      const raw = localStorage.getItem(KEY_ACCOUNTS);
-      const list = raw ? JSON.parse(raw) : [];
-      return Array.isArray(list) ? list : [];
-    } catch (e) { return []; }
-  }
-  function setAccounts(list) {
-    try { localStorage.setItem(KEY_ACCOUNTS, JSON.stringify(list)); return true; }
-    catch (e) { return false; }
-  }
-  function findById(id) {
-    return getAccounts().filter(function (a) { return a.id === id; })[0] || null;
-  }
-  function emailTaken(email, ignoreId) {
-    const e = String(email).trim().toLowerCase();
-    return getAccounts().some(function (a) { return a.email === e && a.id !== ignoreId; });
-  }
-  function usernameTaken(username, ignoreId) {
-    const u = String(username).trim().toLowerCase();
-    return getAccounts().some(function (a) { return a.username === u && a.id !== ignoreId; });
-  }
+  const SUPABASE_URL = 'https://hwtrznxestpamoexkhwh.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_7kV3G-rkWCVgS51dAVQj_g_xrVIAMWR';
+  const SESSION_KEY = 'sb-hwtrznxestpamoexkhwh-auth-token';
+  const REDIRECT_TO = location.origin + location.pathname;
+
+  const OFFLINE = 'Could not reach the account service. Check your connection and try again.';
+
+  /* "Remember me" decides where the session token is kept: a real
+     Supabase token in localStorage (persists) or sessionStorage (this tab).
+     The token is always verified by Supabase on every request. */
+  let remember = true;
+  try { remember = sessionStorage.getItem('hp.remember') !== '0'; } catch (e) { remember = true; }
+
+  const sessionStore = {
+    getItem: function (k) {
+      try {
+        const v = localStorage.getItem(k);
+        if (v !== null) return v;
+      } catch (e) {}
+      try { return sessionStorage.getItem(k); } catch (e) { return null; }
+    },
+    setItem: function (k, v) {
+      try {
+        if (remember) {
+          localStorage.setItem(k, v);
+          sessionStorage.removeItem(k);
+        } else {
+          sessionStorage.setItem(k, v);
+          localStorage.removeItem(k);
+        }
+      } catch (e) {}
+    },
+    removeItem: function (k) {
+      try { localStorage.removeItem(k); } catch (e) {}
+      try { sessionStorage.removeItem(k); } catch (e) {}
+    }
+  };
+
+  let sb = null;
+  try {
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: {
+          storage: sessionStore,
+          storageKey: SESSION_KEY,
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          flowType: 'implicit'
+        }
+      });
+    }
+  } catch (e) { sb = null; }
+
+  /* ==========================================================
+     2. SESSION STATE
+     The signed-in user always comes from Supabase; the profile row
+     is read from the database, never from browser storage.
+     ========================================================== */
+  let sessionUser = null;
+  let profile = null;
+  let authReady = false;
+  let recoveryMode = false;
 
   function readSession() {
-    let raw = localStorage.getItem(KEY_SESSION);
-    let remember = true;
-    if (!raw) { raw = sessionStorage.getItem(KEY_SESSION); remember = false; }
-    if (!raw) return null;
-    let data = null;
-    try { data = JSON.parse(raw); } catch (e) { data = null; }
-    if (!data || !data.userId) { clearSession(); return null; }
-    const user = findById(data.userId);
-    if (!user) { clearSession(); return null; }
-    return { user: user, remember: remember };
+    if (!profile) return null;
+    return { user: profile, remember: remember };
   }
-  function writeSession(userId, remember) {
-    const payload = JSON.stringify({ userId: userId, at: Date.now() });
-    if (remember) {
-      localStorage.setItem(KEY_SESSION, payload);
-      sessionStorage.removeItem(KEY_SESSION);
-    } else {
-      sessionStorage.setItem(KEY_SESSION, payload);
-      localStorage.removeItem(KEY_SESSION);
+
+  function usernameFallback(user) {
+    const meta = user.user_metadata || {};
+    const fromMeta = String(meta.username || '').toLowerCase().replace(/[^a-z0-9_]/g, '');
+    if (fromMeta.length >= 3) return fromMeta.slice(0, 20);
+    const local = String(user.email || 'user').split('@')[0].toLowerCase().replace(/[^a-z0-9_]/g, '');
+    return (local.length >= 3 ? local : 'user').slice(0, 20);
+  }
+
+  let lastSyncId = '';
+  let lastSyncAt = 0;
+
+  async function syncProfile(user, force) {
+    if (!force && profile && lastSyncId === user.id && Date.now() - lastSyncAt < 1500) return profile;
+    lastSyncId = user.id;
+    lastSyncAt = Date.now();
+    sessionUser = user;
+    const meta = user.user_metadata || {};
+    const fallbackName = String(meta.full_name || meta.name || (user.email || '').split('@')[0] || 'You');
+    let row = null;
+
+    try {
+      const res = await sb.from('profiles')
+        .select('id,username,full_name,bio,avatar_url,created_at')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (!res.error) row = res.data;
+    } catch (e) { row = null; }
+
+    if (!row) {
+      const base = usernameFallback(user);
+      const candidates = [base, (base.slice(0, 12) + '_' + user.id.replace(/-/g, '').slice(0, 6))];
+      for (let i = 0; i < candidates.length && !row; i++) {
+        try {
+          const created = await sb.from('profiles')
+            .insert({ id: user.id, username: candidates[i], full_name: fallbackName })
+            .select('id,username,full_name,bio,avatar_url,created_at')
+            .single();
+          if (!created.error) row = created.data;
+        } catch (e) { row = null; }
+      }
     }
-  }
-  function clearSession() {
-    localStorage.removeItem(KEY_SESSION);
-    sessionStorage.removeItem(KEY_SESSION);
+
+    profile = {
+      id: user.id,
+      name: (row && row.full_name) || fallbackName,
+      username: (row && row.username) || usernameFallback(user),
+      email: user.email || '',
+      bio: (row && row.bio) || '',
+      avatar: (row && row.avatar_url) || '',
+      createdAt: (row && row.created_at) || user.created_at
+    };
+    return profile;
   }
 
   /* ==========================================================
-     2. AVATARS (IndexedDB)
+     3. AVATARS (Supabase Storage bucket "avatars")
      ========================================================== */
-  let dbPromise = null;
-  function openDb() {
-    if (!('indexedDB' in window)) return Promise.reject(new Error('indexeddb-unavailable'));
-    if (!dbPromise) {
-      dbPromise = new Promise(function (resolve, reject) {
-        const req = indexedDB.open('hp-avatars', 1);
-        req.onupgradeneeded = function () {
-          if (!req.result.objectStoreNames.contains('avatars')) req.result.createObjectStore('avatars');
-        };
-        req.onsuccess = function () { resolve(req.result); };
-        req.onerror = function () { reject(req.error); };
-      });
-    }
-    return dbPromise;
-  }
-  function avatarGet(id) {
-    return openDb().then(function (d) {
-      return new Promise(function (resolve, reject) {
-        const tx = d.transaction('avatars', 'readonly');
-        const q = tx.objectStore('avatars').get(id);
-        q.onsuccess = function () { resolve(q.result || null); };
-        q.onerror = function () { reject(q.error); };
-      });
-    }).catch(function () { return null; });
-  }
-  function avatarPut(id, blob) {
-    return openDb().then(function (d) {
-      return new Promise(function (resolve, reject) {
-        const tx = d.transaction('avatars', 'readwrite');
-        tx.objectStore('avatars').put(blob, id);
-        tx.oncomplete = function () { resolve(true); };
-        tx.onerror = function () { reject(tx.error); };
-      });
-    });
-  }
-  function avatarDelete(id) {
-    return openDb().then(function (d) {
-      return new Promise(function (resolve, reject) {
-        const tx = d.transaction('avatars', 'readwrite');
-        tx.objectStore('avatars').delete(id);
-        tx.oncomplete = function () { resolve(true); };
-        tx.onerror = function () { reject(tx.error); };
-      });
-    }).catch(function () { return false; });
-  }
-
   function paintAvatar(el, user) {
     if (!el || !user) return;
     if (el.dataset.url) { URL.revokeObjectURL(el.dataset.url); delete el.dataset.url; }
-    el.textContent = initials(user.name);
-    avatarGet(user.id).then(function (blob) {
-      if (!blob || !blob.size) return;
-      const url = URL.createObjectURL(blob);
+    el.textContent = '';
+    if (user.avatar) {
       const img = document.createElement('img');
       img.alt = '';
-      img.src = url;
-      el.textContent = '';
+      img.src = user.avatar;
+      img.onerror = function () {
+        img.remove();
+        el.textContent = initials(user.name);
+      };
       el.appendChild(img);
-      el.dataset.url = url;
+      return;
+    }
+    el.textContent = initials(user.name);
+  }
+
+  function avatarPathFromUrl(url) {
+    if (!url) return '';
+    const marker = '/object/public/avatars/';
+    const at = String(url).indexOf(marker);
+    if (at === -1) return '';
+    return decodeURIComponent(String(url).slice(at + marker.length).split('?')[0]);
+  }
+
+  async function uploadAvatar(file) {
+    if (!sessionUser) throw new Error('Please sign in again.');
+    const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+    const path = sessionUser.id + '/avatar-' + Date.now() + '.' + ext;
+    const up = await sb.storage.from('avatars').upload(path, file, {
+      cacheControl: '3600',
+      upsert: false,
+      contentType: file.type
     });
+    if (up.error) throw up.error;
+
+    const publicUrl = sb.storage.from('avatars').getPublicUrl(path).data.publicUrl;
+    const saved = await sb.from('profiles').update({ avatar_url: publicUrl }).eq('id', sessionUser.id);
+    if (saved.error) throw saved.error;
+
+    const oldPath = avatarPathFromUrl(profile && profile.avatar);
+    if (oldPath && oldPath !== path) {
+      try { await sb.storage.from('avatars').remove([oldPath]); } catch (e) {}
+    }
+    return publicUrl;
   }
 
   /* ==========================================================
-     3. FILE VALIDATION
+     4. FILE VALIDATION
      ========================================================== */
   const OK_TYPES = ['image/png', 'image/jpeg', 'image/webp'];
   function validateImage(file) {
@@ -2288,7 +2371,7 @@ html.is-smoothscroll{scroll-behavior:auto}
   }
 
   /* ==========================================================
-     4. ROUTER / ACCESS CONTROL
+     5. ROUTER / ACCESS CONTROL
      ========================================================== */
   function currentPath() {
     const h = location.hash || '';
@@ -2296,10 +2379,23 @@ html.is-smoothscroll{scroll-behavior:auto}
   }
 
   function render() {
+    if (!authReady) return;
     const session = readSession();
     const path = currentPath();
     closeUserMenu();
     closeMenu();
+
+    if (recoveryMode && path === '/reset') {
+      body.classList.add('is-auth');
+      $('#app').hidden = true;
+      $('#authShell').hidden = true;
+      $('#forgotShell').hidden = true;
+      $('#resetShell').hidden = false;
+      document.title = 'Set a new password — Harshit';
+      return;
+    }
+    if (path !== '/reset') recoveryMode = false;
+    $('#resetShell').hidden = true;
 
     if (!session) {
       body.classList.add('is-auth');
@@ -2379,6 +2475,10 @@ html.is-smoothscroll{scroll-behavior:auto}
   function fillProfile(user) {
     $('#profName').textContent = user.name;
     $('#profHandle').textContent = '@' + user.username;
+    if ($('#profBio')) {
+      $('#profBio').textContent = user.bio || '';
+      $('#profBio').hidden = !user.bio;
+    }
     $('#profEmail').textContent = user.email;
     $('#profJoined').textContent = formatDate(user.createdAt);
     const s = readSession();
@@ -2387,19 +2487,17 @@ html.is-smoothscroll{scroll-behavior:auto}
 
     $('#pfName').value = user.name;
     $('#pfUser').value = user.username;
+    if ($('#pfBio')) $('#pfBio').value = user.bio || '';
     $('#pfEmail').value = user.email;
     fieldError('pfNameField', 'pfNameErr', '');
     fieldError('pfUserField', 'pfUserErr', '');
+    if ($('#pfBioField')) fieldError('pfBioField', 'pfBioErr', '');
     $('#pfSaved').textContent = '';
     setAvail($('#pfUserAvail'), '', '');
 
     const preview = $('#ppPreview');
     paintAvatar(preview, user);
-    $('#ppRemove').hidden = true;
-    avatarGet(user.id).then(function (blob) {
-      const btn = $('#ppRemove');
-      if (btn) btn.hidden = !(blob && blob.size);
-    });
+    $('#ppRemove').hidden = !user.avatar;
     $('#ppSave').disabled = true;
     $('#ppHint').textContent = 'Pick a file to preview it before saving.';
     clearStatus($('#ppStatus'));
@@ -2431,7 +2529,7 @@ html.is-smoothscroll{scroll-behavior:auto}
   }
 
   /* ==========================================================
-     5. AUTH FORMS
+     6. AUTH FORMS
      ========================================================== */
   $$('.pw-toggle').forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -2444,6 +2542,27 @@ html.is-smoothscroll{scroll-behavior:auto}
       btn.setAttribute('aria-pressed', show ? 'true' : 'false');
     });
   });
+
+  function authErrorMessage(error) {
+    const raw = (error && (error.message || error.error_description)) || '';
+    const low = raw.toLowerCase();
+    if (low.indexOf('invalid login credentials') > -1 || low.indexOf('invalid email or password') > -1) {
+      return 'That email and password do not match an account.';
+    }
+    if (low.indexOf('email not confirmed') > -1) {
+      return 'Confirm your email first — open the link we sent to your inbox.';
+    }
+    if (low.indexOf('user already registered') > -1 || low.indexOf('already been registered') > -1) {
+      return 'An account with that email already exists. Sign in instead.';
+    }
+    if (low.indexOf('password should be') > -1) return 'Use a password with at least 8 characters.';
+    if (low.indexOf('rate limit') > -1 || low.indexOf('too many') > -1) {
+      return 'Too many attempts. Wait a minute and try again.';
+    }
+    if (low.indexOf('database error') > -1) return 'That username is already taken. Try another one.';
+    if (low.indexOf('failed to fetch') > -1 || low.indexOf('network') > -1) return OFFLINE;
+    return raw || 'Something went wrong. Try again.';
+  }
 
   function openForgot() {
     $('#forgotShell').hidden = false;
@@ -2458,38 +2577,36 @@ html.is-smoothscroll{scroll-behavior:auto}
   if (forgotBtn) forgotBtn.addEventListener('click', openForgot);
   const fgClose = $('#fgClose');
   if (fgClose) fgClose.addEventListener('click', closeForgot);
-  const fgDelete = $('#fgDelete');
-  if (fgDelete) fgDelete.addEventListener('click', function () {
+
+  const fgSend = $('#fgSend');
+  if (fgSend) fgSend.addEventListener('click', async function () {
     const email = $('#fgEmail').value.trim().toLowerCase();
     const status = $('#fgStatus');
     fieldError('fgEmailField', 'fgEmailErr', '');
     clearStatus(status);
     if (!EMAIL_RE.test(email)) {
-      fieldError('fgEmailField', 'fgEmailErr', 'Enter the email address you registered with.');
+      fieldError('fgEmailField', 'fgEmailErr', 'Enter the email address you signed up with.');
       return;
     }
-    const list = getAccounts();
-    const index = list.map(function (a) { return a.email; }).indexOf(email);
-    if (index === -1) {
-      setStatus(status, 'No local account uses that email in this browser.', 'bad');
-      return;
+    if (!sb) { setStatus(status, OFFLINE, 'bad'); return; }
+    busy(fgSend, 'Sending');
+    try {
+      await sb.auth.resetPasswordForEmail(email, { redirectTo: REDIRECT_TO });
+      setStatus(status, 'If an account uses ' + email + ', a recovery link is on its way. Open it on this device to set a new password.', 'ok');
+    } catch (e) {
+      setStatus(status, authErrorMessage(e), 'bad');
+    } finally {
+      idle(fgSend, 'Send recovery link');
     }
-    const removed = list.splice(index, 1)[0];
-    setAccounts(list);
-    avatarDelete(removed.id);
-    clearSession();
-    pending = null;
-    setStatus(status, 'Account removed from this browser. You can register again with the same email.', 'ok');
-    toast('Local account deleted.', 'ok');
-    setTimeout(function () { closeForgot(); render(); }, 900);
   });
 
+  /* ---------- sign in ---------- */
   const loginForm = $('#loginForm');
   if (loginForm) loginForm.addEventListener('submit', async function (event) {
     event.preventDefault();
     const idEl = $('#liId');
     const pwEl = $('#liPw');
-    const remember = $('#liRemember').checked;
+    const rememberEl = $('#liRemember');
     const btn = $('#loginSubmit');
     const status = $('#loginStatus');
     const identifier = idEl.value.trim();
@@ -2499,44 +2616,41 @@ html.is-smoothscroll{scroll-behavior:auto}
     fieldError('liPwField', 'liPwErr', '');
     clearStatus(status);
 
-    if (!identifier) { fieldError('liIdField', 'liIdErr', 'Enter your email or username.'); idEl.focus(); return; }
+    if (!identifier) { fieldError('liIdField', 'liIdErr', 'Enter your email address.'); idEl.focus(); return; }
     if (!password) { fieldError('liPwField', 'liPwErr', 'Enter your password.'); pwEl.focus(); return; }
-    if (!HAS_SUBTLE) {
-      setStatus(status, 'This browser cannot hash passwords on this page. Open the site over https (GitHub Pages), not from a file.', 'bad');
-      return;
-    }
+    if (!sb) { setStatus(status, OFFLINE, 'bad'); return; }
 
-    const lookup = identifier.toLowerCase();
-    const isEmail = identifier.indexOf('@') > -1;
-    const user = getAccounts().filter(function (a) {
-      return isEmail ? a.email === lookup : a.username === lookup;
-    })[0];
-
-    if (!user) {
-      setStatus(status, 'No account in this browser matches that ' + (isEmail ? 'email' : 'username') + '.', 'bad');
-      return;
-    }
-
-    btn.disabled = true;
-    btn.innerHTML = '<span class="btn__spin"></span> Checking';
+    busy(btn, 'Checking');
     try {
-      const digest = await hashPassword(password, user.salt, user.iterations || ITERATIONS);
-      if (digest !== user.hash) {
-        setStatus(status, 'That password does not match this account.', 'bad');
+      if (!EMAIL_RE.test(identifier)) {
+        fieldError('liIdField', 'liIdErr', 'Enter the email address you signed up with.');
+        idEl.focus();
+        return;
+      }
+      const email = identifier.toLowerCase();
+
+      remember = !!(rememberEl && rememberEl.checked);
+      try { sessionStorage.setItem('hp.remember', remember ? '1' : '0'); } catch (e) {}
+      try { localStorage.removeItem(SESSION_KEY); sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+
+      const res = await sb.auth.signInWithPassword({ email: email, password: password });
+      if (res.error) {
+        setStatus(status, authErrorMessage(res.error), 'bad');
         pwEl.value = '';
         pwEl.focus();
         return;
       }
-      writeSession(user.id, remember);
-      toast('Welcome back, ' + user.name.split(' ')[0] + '.', 'ok');
+      await syncProfile(res.data.user, true);
+      authReady = true;
+      toast('Welcome back, ' + String(profile.name).split(' ')[0] + '.', 'ok');
       const target = pending || '#/';
       pending = null;
       go(target);
-    } catch (err) {
-      setStatus(status, 'Could not check that password. Try again.', 'bad');
+      render();
+    } catch (e) {
+      setStatus(status, authErrorMessage(e), 'bad');
     } finally {
-      btn.disabled = false;
-      btn.textContent = 'Sign in';
+      idle(btn, 'Sign in');
     }
   });
 
@@ -2579,18 +2693,28 @@ html.is-smoothscroll{scroll-behavior:auto}
     if (rgPreview && !regAvatar) rgPreview.textContent = initials(rgName.value || '?');
   });
 
+  let userLookupTimer = null;
   const rgUser = $('#rgUser');
   if (rgUser) rgUser.addEventListener('input', function () {
     const value = rgUser.value.trim();
     const avail = $('#rgUserAvail');
     fieldError('rgUserField', 'rgUserErr', '');
+    clearTimeout(userLookupTimer);
     if (!value) { setAvail(avail, '', ''); return; }
     if (!USER_RE.test(value)) {
       setAvail(avail, '3–20 characters · letters, numbers and underscores only', 'bad');
       return;
     }
-    if (usernameTaken(value)) { setAvail(avail, 'That username is already taken', 'bad'); return; }
-    setAvail(avail, 'Username is available', 'ok');
+    setAvail(avail, 'Checking availability…', '');
+    userLookupTimer = setTimeout(async function () {
+      if (!sb) { setAvail(avail, '', ''); return; }
+      try {
+        const res = await sb.rpc('username_available', { p_username: value.toLowerCase() });
+        if (res.error) { setAvail(avail, '', ''); return; }
+        if (res.data === false) setAvail(avail, 'That username is already taken', 'bad');
+        else setAvail(avail, 'Username is available', 'ok');
+      } catch (e) { setAvail(avail, '', ''); }
+    }, 380);
   });
 
   function passwordProblem(pw) {
@@ -2603,7 +2727,7 @@ html.is-smoothscroll{scroll-behavior:auto}
   if (registerForm) registerForm.addEventListener('submit', async function (event) {
     event.preventDefault();
     const name = $('#rgName').value.trim();
-    const username = $('#rgUser').value.trim();
+    const username = $('#rgUser').value.trim().toLowerCase();
     const email = $('#rgEmail').value.trim().toLowerCase();
     const pw = $('#rgPw').value;
     const pw2 = $('#rgPw2').value;
@@ -2618,9 +2742,7 @@ html.is-smoothscroll{scroll-behavior:auto}
 
     if (name.length < 2) { fieldError('rgNameField', 'rgNameErr', 'Enter your full name.'); bad = true; }
     if (!USER_RE.test(username)) { fieldError('rgUserField', 'rgUserErr', 'Use 3–20 letters, numbers or underscores.'); bad = true; }
-    else if (usernameTaken(username)) { fieldError('rgUserField', 'rgUserErr', 'That username is already taken.'); bad = true; }
     if (!EMAIL_RE.test(email)) { fieldError('rgEmailField', 'rgEmailErr', 'Enter a valid email address.'); bad = true; }
-    else if (emailTaken(email)) { fieldError('rgEmailField', 'rgEmailErr', 'An account with this email already exists.'); bad = true; }
     const pwIssue = passwordProblem(pw);
     if (pwIssue) { fieldError('rgPwField', 'rgPwErr', pwIssue); bad = true; }
     if (pw !== pw2 || !pw2) { fieldError('rgPw2Field', 'rgPw2Err', 'Both passwords must match.'); bad = true; }
@@ -2629,56 +2751,115 @@ html.is-smoothscroll{scroll-behavior:auto}
       if (problem) { fieldError('rgAvatarField', 'rgAvatarErr', problem); bad = true; }
     }
     if (bad) return;
-    if (!HAS_SUBTLE) {
-      setStatus(status, 'This browser cannot hash passwords on this page. Open the site over https (GitHub Pages), not from a file.', 'bad');
-      return;
-    }
+    if (!sb) { setStatus(status, OFFLINE, 'bad'); return; }
 
-    btn.disabled = true;
-    btn.innerHTML = '<span class="btn__spin"></span> Creating account';
+    busy(btn, 'Creating account');
     try {
-      const salt = randomHex(16);
-      const digest = await hashPassword(pw, salt, ITERATIONS);
-      const account = {
-        id: 'u_' + randomHex(6) + Date.now().toString(36),
-        name: name,
-        username: username.toLowerCase(),
-        email: email,
-        salt: salt,
-        hash: digest,
-        iterations: ITERATIONS,
-        createdAt: new Date().toISOString()
-      };
-      const list = getAccounts();
-      list.push(account);
-      if (!setAccounts(list)) {
-        setStatus(status, 'This browser could not save the account — storage may be full or blocked.', 'bad');
+      const free = await sb.rpc('username_available', { p_username: username });
+      if (!free.error && free.data === false) {
+        fieldError('rgUserField', 'rgUserErr', 'That username is already taken.');
         return;
       }
-      if (regAvatar) {
-        try { await avatarPut(account.id, regAvatar); }
-        catch (e) { toast('Account created, but the picture could not be saved.', 'bad'); }
+
+      const res = await sb.auth.signUp({
+        email: email,
+        password: pw,
+        options: {
+          data: { username: username, full_name: name },
+          emailRedirectTo: REDIRECT_TO
+        }
+      });
+      if (res.error) {
+        const msg = authErrorMessage(res.error);
+        if (msg.indexOf('already exists') > -1) fieldError('rgEmailField', 'rgEmailErr', msg);
+        else setStatus(status, msg, 'bad');
+        return;
       }
-      writeSession(account.id, true);
+
+      if (!res.data.session) {
+        setStatus(status, 'Account created. Open the confirmation link we emailed to <b>' + email + '</b>, then sign in. Your picture can be added from your profile once you are in.', 'ok', true);
+        rgPw.value = '';
+        rgPw2.value = '';
+        return;
+      }
+
+      await syncProfile(res.data.user, true);
+      authReady = true;
+      if (regAvatar) {
+        try {
+          const url = await uploadAvatar(regAvatar);
+          profile.avatar = url;
+        } catch (e) {
+          toast('Account created, but the picture could not be uploaded.', 'bad');
+        }
+      }
       toast('Account created. Welcome, ' + name.split(' ')[0] + '.', 'ok');
       pending = null;
       go('#/');
-    } catch (err) {
-      setStatus(status, 'Could not create the account. Try again.', 'bad');
+      render();
+    } catch (e) {
+      setStatus(status, authErrorMessage(e), 'bad');
     } finally {
-      btn.disabled = false;
-      btn.textContent = 'Create account';
+      idle(btn, 'Create account');
     }
   });
+
+  /* ---------- password recovery link ---------- */
+  const resetForm = $('#resetForm');
+  if (resetForm) resetForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    const pw = $('#rsPw').value;
+    const pw2 = $('#rsPw2').value;
+    const status = $('#rsStatus');
+    const btn = $('#rsSave');
+    let bad = false;
+
+    fieldError('rsPwField', 'rsPwErr', '');
+    fieldError('rsPw2Field', 'rsPw2Err', '');
+    clearStatus(status);
+    const issue = passwordProblem(pw);
+    if (issue) { fieldError('rsPwField', 'rsPwErr', issue); bad = true; }
+    if (pw !== pw2 || !pw2) { fieldError('rsPw2Field', 'rsPw2Err', 'Both passwords must match.'); bad = true; }
+    if (bad) return;
+    if (!sb) { setStatus(status, OFFLINE, 'bad'); return; }
+
+    busy(btn, 'Saving');
+    try {
+      const res = await sb.auth.updateUser({ password: pw });
+      if (res.error) { setStatus(status, authErrorMessage(res.error), 'bad'); return; }
+      setStatus(status, 'Password updated. Taking you inside…', 'ok');
+      recoveryMode = false;
+      $('#rsPw').value = '';
+      $('#rsPw2').value = '';
+      if (res.data && res.data.user) await syncProfile(res.data.user, true);
+      authReady = true;
+      setTimeout(function () { go('#/'); render(); toast('Password updated.', 'ok'); }, 600);
+    } catch (e) {
+      setStatus(status, authErrorMessage(e), 'bad');
+    } finally {
+      idle(btn, 'Save new password');
+    }
+  });
+
+  const rsCancel = $('#rsCancel');
+  if (rsCancel) rsCancel.addEventListener('click', function () {
+    recoveryMode = false;
+    if (location.hash === '#/reset') history.replaceState(null, '', '#/login');
+    render();
+  });
+
   /* ==========================================================
-     6. PROFILE
+     7. PROFILE & SETTINGS
      ========================================================== */
-  function signOut() {
-    clearSession();
+  async function signOut() {
+    try { if (sb) await sb.auth.signOut(); } catch (e) {}
+    profile = null;
+    sessionUser = null;
     pending = null;
     closeUserMenu();
     closeMenu();
     toast('Signed out.', '');
+    render();
     go('#/login');
   }
 
@@ -2689,51 +2870,84 @@ html.is-smoothscroll{scroll-behavior:auto}
   const setSignOut = $('#setSignOut');
   if (setSignOut) setSignOut.addEventListener('click', signOut);
 
+  let pfLookupTimer = null;
   const pfUser = $('#pfUser');
   if (pfUser) pfUser.addEventListener('input', function () {
-    const session = readSession();
-    if (!session) return;
+    const s = readSession();
+    if (!s) return;
     const value = pfUser.value.trim().toLowerCase();
     const avail = $('#pfUserAvail');
     fieldError('pfUserField', 'pfUserErr', '');
+    clearTimeout(pfLookupTimer);
     if (!value) { setAvail(avail, '', ''); return; }
     if (!USER_RE.test(value)) { setAvail(avail, '3–20 characters · letters, numbers and underscores only', 'bad'); return; }
-    if (usernameTaken(value, session.user.id)) { setAvail(avail, 'That username is already taken', 'bad'); return; }
-    setAvail(avail, 'Username is available', 'ok');
+    if (value === s.user.username) { setAvail(avail, 'That is your current username', ''); return; }
+    setAvail(avail, 'Checking availability…', '');
+    pfLookupTimer = setTimeout(async function () {
+      if (!sb) return;
+      try {
+        const res = await sb.rpc('username_available', { p_username: value });
+        if (res.error) { setAvail(avail, '', ''); return; }
+        if (res.data === false) setAvail(avail, 'That username is already taken', 'bad');
+        else setAvail(avail, 'Username is available', 'ok');
+      } catch (e) { setAvail(avail, '', ''); }
+    }, 380);
   });
 
   const identityForm = $('#identityForm');
-  if (identityForm) identityForm.addEventListener('submit', function (event) {
+  if (identityForm) identityForm.addEventListener('submit', async function (event) {
     event.preventDefault();
-    const session = readSession();
-    if (!session) { go('#/login'); return; }
+    const s = readSession();
+    if (!s) { go('#/login'); return; }
 
     const name = $('#pfName').value.trim();
     const username = $('#pfUser').value.trim().toLowerCase();
+    const bio = $('#pfBio') ? $('#pfBio').value.trim() : s.user.bio;
     const saved = $('#pfSaved');
+    const btn = $('#pfSave');
     let bad = false;
+
     fieldError('pfNameField', 'pfNameErr', '');
     fieldError('pfUserField', 'pfUserErr', '');
+    if ($('#pfBioField')) fieldError('pfBioField', 'pfBioErr', '');
     saved.textContent = '';
 
     if (name.length < 2) { fieldError('pfNameField', 'pfNameErr', 'Enter at least 2 characters.'); bad = true; }
     if (name.length > 60) { fieldError('pfNameField', 'pfNameErr', 'Keep it under 60 characters.'); bad = true; }
     if (!USER_RE.test(username)) { fieldError('pfUserField', 'pfUserErr', 'Use 3–20 letters, numbers or underscores.'); bad = true; }
-    else if (usernameTaken(username, session.user.id)) { fieldError('pfUserField', 'pfUserErr', 'That username is already taken.'); bad = true; }
+    if (bio.length > 280) { fieldError('pfBioField', 'pfBioErr', 'Keep your bio under 280 characters.'); bad = true; }
     if (bad) return;
+    if (!sb) { toast(OFFLINE, 'bad'); return; }
 
-    const list = getAccounts();
-    const index = list.map(function (a) { return a.id; }).indexOf(session.user.id);
-    if (index === -1) { go('#/login'); return; }
-    list[index].name = name;
-    list[index].username = username;
-    if (!setAccounts(list)) { toast('Could not save — browser storage is full.', 'bad'); return; }
+    busy(btn, 'Saving');
+    try {
+      if (username !== s.user.username) {
+        const free = await sb.rpc('username_available', { p_username: username });
+        if (!free.error && free.data === false) {
+          fieldError('pfUserField', 'pfUserErr', 'That username is already taken.');
+          return;
+        }
+      }
 
-    const updated = list[index];
-    renderChrome(updated);
-    fillProfile(updated);
-    $('#pfSaved').textContent = 'Saved just now.';
-    toast('Profile updated.', 'ok');
+      const res = await sb.from('profiles')
+        .update({ username: username, full_name: name, bio: bio })
+        .eq('id', sessionUser.id);
+      if (res.error) {
+        if (String(res.error.code) === '23505') fieldError('pfUserField', 'pfUserErr', 'That username is already taken.');
+        else toast('Could not save your profile. Try again.', 'bad');
+        return;
+      }
+
+      await syncProfile(sessionUser, true);
+      renderChrome(profile);
+      fillProfile(profile);
+      $('#pfSaved').textContent = 'Saved just now.';
+      toast('Profile updated.', 'ok');
+    } catch (e) {
+      toast(authErrorMessage(e), 'bad');
+    } finally {
+      idle(btn, 'Save changes');
+    }
   });
 
   /* ---------- picture ---------- */
@@ -2745,8 +2959,8 @@ html.is-smoothscroll{scroll-behavior:auto}
   const ppHint = $('#ppHint');
 
   if (ppFile) ppFile.addEventListener('change', function () {
-    const session = readSession();
-    if (!session) return;
+    const s = readSession();
+    if (!s) return;
     const file = ppFile.files && ppFile.files[0];
     pendingAvatar = null;
     ppSave.disabled = true;
@@ -2761,50 +2975,61 @@ html.is-smoothscroll{scroll-behavior:auto}
     pendingAvatar = file;
     previewInto(ppPreview, file);
     ppSave.disabled = false;
-    ppHint.textContent = 'Preview shown — press Save picture to store it.';
+    ppHint.textContent = 'Preview shown — press Save picture to upload it.';
   });
 
   if (ppSave) ppSave.addEventListener('click', async function () {
-    const session = readSession();
-    if (!session || !pendingAvatar) return;
+    const s = readSession();
+    if (!s || !pendingAvatar || !sb) return;
     ppSave.disabled = true;
     try {
-      await avatarPut(session.user.id, pendingAvatar);
+      const url = await uploadAvatar(pendingAvatar);
       pendingAvatar = null;
       ppFile.value = '';
-      paintAvatar(ppPreview, session.user);
-      renderChrome(session.user);
+      profile.avatar = url;
+      paintAvatar(ppPreview, profile);
+      renderChrome(profile);
       ppRemove.hidden = false;
-      ppHint.textContent = 'Saved to this browser. Remove it any time.';
+      ppHint.textContent = 'Saved to your account. Remove it any time.';
       setStatus($('#ppStatus'), 'Profile picture saved.', 'ok');
       toast('Picture saved.', 'ok');
-    } catch (err) {
-      setStatus($('#ppStatus'), 'Could not store that picture in this browser.', 'bad');
+    } catch (e) {
+      setStatus($('#ppStatus'), 'Could not upload that picture. ' + ((e && e.message) || ''), 'bad');
       ppSave.disabled = false;
     }
   });
 
   if (ppRemove) ppRemove.addEventListener('click', async function () {
-    const session = readSession();
-    if (!session) return;
-    await avatarDelete(session.user.id);
-    pendingAvatar = null;
-    ppFile.value = '';
-    ppSave.disabled = true;
-    if (ppPreview.dataset.url) { URL.revokeObjectURL(ppPreview.dataset.url); delete ppPreview.dataset.url; }
-    ppPreview.textContent = initials(session.user.name);
-    renderChrome(session.user);
-    ppHint.textContent = 'Custom picture removed — the default initials are back.';
-    setStatus($('#ppStatus'), 'Picture removed. The default avatar is back.', 'ok');
-    toast('Picture removed.', '');
+    const s = readSession();
+    if (!s || !sb) return;
+    ppRemove.disabled = true;
+    try {
+      const path = avatarPathFromUrl(profile.avatar);
+      const res = await sb.from('profiles').update({ avatar_url: null }).eq('id', sessionUser.id);
+      if (res.error) throw res.error;
+      if (path) { try { await sb.storage.from('avatars').remove([path]); } catch (e) {} }
+      profile.avatar = '';
+      pendingAvatar = null;
+      ppFile.value = '';
+      ppSave.disabled = true;
+      paintAvatar(ppPreview, profile);
+      renderChrome(profile);
+      ppHint.textContent = 'Custom picture removed — the default initials are back.';
+      setStatus($('#ppStatus'), 'Picture removed. The default avatar is back.', 'ok');
+      toast('Picture removed.', '');
+    } catch (e) {
+      setStatus($('#ppStatus'), 'Could not remove that picture. Try again.', 'bad');
+    } finally {
+      ppRemove.disabled = false;
+    }
   });
 
   /* ---------- password ---------- */
   const passwordForm = $('#passwordForm');
   if (passwordForm) passwordForm.addEventListener('submit', async function (event) {
     event.preventDefault();
-    const session = readSession();
-    if (!session) { go('#/login'); return; }
+    const s = readSession();
+    if (!s) { go('#/login'); return; }
 
     const current = $('#scCur').value;
     const next = $('#scNew').value;
@@ -2823,55 +3048,124 @@ html.is-smoothscroll{scroll-behavior:auto}
     if (issue) { fieldError('scNewField', 'scNewErr', issue); bad = true; }
     if (next !== confirm) { fieldError('scNew2Field', 'scNew2Err', 'Both new passwords must match.'); bad = true; }
     if (bad) return;
+    if (!sb) { setStatus(status, OFFLINE, 'bad'); return; }
 
-    btn.disabled = true;
-    btn.innerHTML = '<span class="btn__spin"></span> Updating';
+    busy(btn, 'Updating');
     try {
-      const check = await hashPassword(current, session.user.salt, session.user.iterations || ITERATIONS);
-      if (check !== session.user.hash) {
+      const check = await sb.auth.signInWithPassword({ email: s.user.email, password: current });
+      if (check.error) {
         fieldError('scCurField', 'scCurErr', 'That is not your current password.');
         return;
       }
-      const salt = randomHex(16);
-      const digest = await hashPassword(next, salt, ITERATIONS);
-      const list = getAccounts();
-      const index = list.map(function (a) { return a.id; }).indexOf(session.user.id);
-      if (index === -1) { go('#/login'); return; }
-      list[index].salt = salt;
-      list[index].hash = digest;
-      list[index].iterations = ITERATIONS;
-      if (!setAccounts(list)) { setStatus(status, 'Could not save the new password — storage is full.', 'bad'); return; }
-      ['#scCur', '#scNew', '#scNew2'].forEach(function (s) { $(s).value = ''; });
+      const res = await sb.auth.updateUser({ password: next });
+      if (res.error) { setStatus(status, authErrorMessage(res.error), 'bad'); return; }
+      ['#scCur', '#scNew', '#scNew2'].forEach(function (sel) { const el = $(sel); if (el) el.value = ''; });
       setStatus(status, 'Password updated. Use the new one the next time you sign in.', 'ok');
       toast('Password updated.', 'ok');
-    } catch (err) {
-      setStatus(status, 'Could not update the password. Try again.', 'bad');
+    } catch (e) {
+      setStatus(status, authErrorMessage(e), 'bad');
     } finally {
-      btn.disabled = false;
-      btn.textContent = 'Update password';
+      idle(btn, 'Update password');
     }
   });
 
   /* ---------- delete ---------- */
   const deleteForm = $('#deleteForm');
-  if (deleteForm) deleteForm.addEventListener('submit', function (event) {
+  if (deleteForm) deleteForm.addEventListener('submit', async function (event) {
     event.preventDefault();
-    const session = readSession();
-    if (!session) { go('#/login'); return; }
+    const s = readSession();
+    if (!s) { go('#/login'); return; }
     const typed = $('#sdConfirm').value.trim().toLowerCase();
+    const status = $('#sdStatus');
+    const btn = $('#sdDelete');
     fieldError('sdField', 'sdErr', '');
-    if (typed !== session.user.username) {
-      fieldError('sdField', 'sdErr', 'Type your username exactly: ' + session.user.username);
+    clearStatus(status);
+    if (typed !== s.user.username) {
+      fieldError('sdField', 'sdErr', 'Type your username exactly: ' + s.user.username);
       return;
     }
-    const list = getAccounts().filter(function (a) { return a.id !== session.user.id; });
-    setAccounts(list);
-    avatarDelete(session.user.id);
-    clearSession();
-    pending = null;
-    toast('Local account deleted.', '');
-    go('#/login');
+    if (!sb) { setStatus(status, OFFLINE, 'bad'); return; }
+
+    busy(btn, 'Deleting');
+    try {
+      /* Storage objects can only be deleted through the Storage API, and only
+         while this user still holds a session — so clean the folder first. */
+      const bucket = sb.storage.from('avatars');
+      const listed = await bucket.list(sessionUser.id, { limit: 100 });
+      const paths = ((listed && listed.data) || [])
+        .map(function (o) { return o && o.name ? sessionUser.id + '/' + o.name : ''; })
+        .filter(Boolean);
+      if (paths.length) {
+        const removed = await bucket.remove(paths);
+        if (removed.error) {
+          setStatus(status, 'Could not remove your uploaded pictures, so the account was left untouched. Try again.', 'bad');
+          return;
+        }
+      }
+      const res = await sb.rpc('delete_own_account');
+      if (res.error) {
+        setStatus(status, 'Could not delete the account: ' + res.error.message, 'bad');
+        return;
+      }
+      profile = null;
+      sessionUser = null;
+      pending = null;
+      try { await sb.auth.signOut(); } catch (e) {}
+      toast('Your account has been deleted.', '');
+      render();
+      go('#/login');
+    } catch (e) {
+      setStatus(status, authErrorMessage(e), 'bad');
+    } finally {
+      idle(btn, 'Delete my account');
+    }
   });
+
+  /* ==========================================================
+     8. BOOT + AUTH EVENTS
+     ========================================================== */
+  function boot() {
+    if (!sb) {
+      authReady = true;
+      render();
+      setStatus($('#loginStatus'), 'The account library could not load. Check your connection and reload.', 'bad');
+      return;
+    }
+
+    sb.auth.getSession().then(function (res) {
+      const session = res && res.data ? res.data.session : null;
+      if (!session) { authReady = true; render(); return null; }
+      return syncProfile(session.user).then(function () { authReady = true; render(); });
+    }).catch(function () {
+      authReady = true;
+      render();
+    });
+
+    sb.auth.onAuthStateChange(function (event, session) {
+      window.setTimeout(async function () {
+        if (event === 'PASSWORD_RECOVERY') {
+          recoveryMode = true;
+          try { history.replaceState(null, '', '#/reset'); } catch (e) { location.hash = '#/reset'; }
+          if (session && session.user) await syncProfile(session.user);
+          authReady = true;
+          render();
+          return;
+        }
+        if (event === 'SIGNED_OUT') {
+          profile = null;
+          sessionUser = null;
+          if (authReady) render();
+          return;
+        }
+        if (session && session.user) {
+          await syncProfile(session.user);
+          authReady = true;
+          render();
+        }
+      }, 0);
+    });
+  }
+
   /* ==========================================================
      7. CHROME: NAV, MENU, DROPDOWN
      ========================================================== */
@@ -3117,8 +3411,8 @@ html.is-smoothscroll{scroll-behavior:auto}
 
   window.addEventListener('hashchange', render);
 
-  render();
   updateActiveNav();
+  boot();
 })();
 </script>
 
