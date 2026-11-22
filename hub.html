@@ -70,6 +70,9 @@ ul,ol{margin:0;padding:0;list-style:none}
 .nav__links a::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:1px;background:var(--red);transition:right .22s var(--ease)}
 .nav__links a:hover,.nav__links a.is-active{color:var(--ivory)}
 .nav__links a:hover::after,.nav__links a.is-active::after{right:0}
+.nav__links a.nav__msg{gap:7px}
+.nav__links a.nav__msg svg{width:15px;height:15px}
+.nav__badge{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--red);color:#fff;font:600 10px/1 var(--font-display);letter-spacing:0}
 .nav__back{display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--muted);border:1px solid var(--line-2);border-radius:999px;padding:8px 14px;transition:color .16s,border-color .16s,background .16s;white-space:nowrap}
 .nav__back:hover{color:var(--ivory);border-color:var(--red);background:var(--surface-2)}
 .nav__back svg{width:14px;height:14px}
@@ -229,6 +232,7 @@ ul,ol{margin:0;padding:0;list-style:none}
 .seller-head__av img{width:100%;height:100%;object-fit:cover}
 .seller-head h1{font:600 22px/1.2 var(--font-display)}
 .seller-head p{color:var(--muted);font-size:13.5px}
+.seller-head__acts{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
 
 /* ---------- modal ---------- */
 .modal{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:rgba(4,4,5,.72);backdrop-filter:blur(6px)}
@@ -295,6 +299,11 @@ ul,ol{margin:0;padding:0;list-style:none}
     </a>
 
     <nav class="nav__links" aria-label="BLUE HUB">
+      <a href="messages.html" class="nav__msg" aria-label="Messages">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 9 9 0 0 1-3.9-.9L3 21l2-5.1a8.3 8.3 0 0 1-.9-3.8A8.4 8.4 0 0 1 12.6 3 8.4 8.4 0 0 1 21 11.5z"/></svg>
+        <span>Messages</span>
+        <i class="nav__badge" id="navUnread" hidden>0</i>
+      </a>
       <a href="hub.html#/" data-route="/">Explore</a>
       <a href="hub.html#/categories" data-route="/categories">Categories</a>
       <a href="hub.html#/post" data-route="/post">Post a Service</a>
@@ -314,6 +323,7 @@ ul,ol{margin:0;padding:0;list-style:none}
     </button>
   </div>
   <div class="mobile-menu" id="mobileMenu" hidden>
+    <a href="messages.html">Messages <span id="mobUnread"></span></a>
     <a href="hub.html#/" data-route="/">Explore</a>
     <a href="hub.html#/categories" data-route="/categories">Categories</a>
     <a href="hub.html#/post" data-route="/post">Post a Service</a>
@@ -835,6 +845,7 @@ ul,ol{margin:0;padding:0;list-style:none}
     state.user = null;
     state.profile = null;
     paintChip();
+    loadUnread();
     toast('Signed out.', 'ok');
     render();
   }
@@ -1616,6 +1627,16 @@ ul,ol{margin:0;padding:0;list-style:none}
         el('p', { text: (person && person.username ? '@' + person.username + ' · ' : '') + 'Creator on BLUE HUB' })
       ]));
 
+      /* message / friend shortcuts — every public profile has them */
+      if (!state.user || state.user.id !== id) {
+        head.appendChild(el('div', { class: 'seller-head__acts' }, [
+          el('a', { class: 'btn btn--sm', href: 'messages.html#/c/' + id, text: 'Message' }),
+          state.user
+            ? el('button', { class: 'btn btn--sm btn--ghost', type: 'button', text: 'Add friend', on: { click: function (ev) { addFriend(id, ev.currentTarget); } } })
+            : null
+        ]));
+      }
+
       const res = await sb.from('services').select('id,user_id,title,description,category,skills,starting_price,currency,image_url,contact_method,contact_value,availability,status,created_at')
         .eq('user_id', id).eq('status', 'published').order('created_at', { ascending: false });
       if (res.error) throw res.error;
@@ -1637,6 +1658,39 @@ ul,ol{margin:0;padding:0;list-style:none}
         el('h3', { text: 'This profile could not be loaded' }),
         el('p', { text: (err && err.message) || 'Please try again.' })
       ]));
+    }
+  }
+
+  /* ==========================================================
+     9b. MESSAGING SHORTCUTS
+     ========================================================== */
+  async function loadUnread() {
+    const a = $('#navUnread');
+    const b = $('#mobUnread');
+    if (!sb || !state.user) {
+      if (a) a.hidden = true;
+      if (b) b.textContent = '';
+      return;
+    }
+    try {
+      const res = await sb.rpc('hub_unread_total');
+      const n = !res.error && typeof res.data === 'number' ? res.data : 0;
+      if (a) { a.textContent = n > 99 ? '99+' : String(n); a.hidden = n === 0; }
+      if (b) b.textContent = n ? '· ' + n : '';
+    } catch (e) {}
+  }
+
+  async function addFriend(peerId, btn) {
+    if (!state.user) { requireAuth('messages.html#/c/' + peerId); return; }
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+    try {
+      const res = await sb.rpc('hub_send_friend_request', { peer: peerId });
+      if (res.error) throw res.error;
+      toast('Friend request sent.', 'ok');
+      if (btn) btn.textContent = 'Requested';
+    } catch (err) {
+      toast((err && err.message) || 'Could not send the friend request.', 'bad');
+      if (btn) { btn.disabled = false; btn.textContent = 'Add friend'; }
     }
   }
 
@@ -1730,6 +1784,19 @@ ul,ol{margin:0;padding:0;list-style:none}
       return;
     }
     await loadSession();
+    loadUnread();
+    if (state.user) {
+      try {
+        sb.channel('hub:nav:' + state.user.id)
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, function () { loadUnread(); })
+          .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'conversation_members' }, function () { loadUnread(); })
+          .subscribe();
+      } catch (e) {}
+      window.addEventListener('focus', loadUnread);
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') loadUnread();
+      });
+    }
     if (sb.auth && sb.auth.onAuthStateChange) {
       sb.auth.onAuthStateChange(function () {
         setTimeout(function () { loadSession(); }, 0);
