@@ -1062,7 +1062,7 @@ html.is-smoothscroll{scroll-behavior:auto}
 <div class="intro" id="intro" aria-hidden="true">
   <div class="intro__inner">
     <span class="intro__kicker">Harshit · Dev</span>
-    <span class="intro__name"><span>HARSHIT</span></span>
+    <span class="intro__name"><span>BLUE HUB</span></span>
     <span class="intro__line"></span>
   </div>
 </div>
@@ -1339,7 +1339,7 @@ html.is-smoothscroll{scroll-behavior:auto}
       <div class="hero__grid">
         <div class="hero__main">
           <p class="hero__eyebrow mono"><i class="live-dot" aria-hidden="true"></i>Available for work · 2026</p>
-          <h1 class="hero__name">HARSHIT</h1>
+          <h1 class="hero__name">BLUE HUB</h1>
           <p class="hero__role">Web Developer <span style="color:var(--muted-2)">&amp;</span> <em>App Developer</em></p>
           <p class="hero__sub">
             I'm <b>Harshit</b> — a developer crafting fast, precise interfaces for the web and for mobile.
@@ -2867,7 +2867,7 @@ html.is-smoothscroll{scroll-behavior:auto}
       try { hubReturn = sessionStorage.getItem('hub.return'); } catch (e) {}
       if (hubReturn) {
         try { sessionStorage.removeItem('hub.return'); } catch (e) {}
-        location.href = 'hub.html' + (hubReturn.charAt(0) === '#' ? hubReturn : '#' + hubReturn);
+        location.href = hubReturn.charAt(0) === '#' ? ('hub.html' + hubReturn) : hubReturn;
         return;
       }
 
